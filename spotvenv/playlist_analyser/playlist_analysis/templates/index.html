@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        Hello world! index page
+    </h1>
+    <form action = "analysis/" method = "post">
+        {% csrf_token %}
+        <input name = "playlist_link" type="text" placeholder="Search by track name" autocomplete="on">
+        <!--the search bar button-->
+        <input type="image" value = "Search">    
+    </form>
+</body>
+</html>
