@@ -52,7 +52,6 @@ class Song:
         response = requests.post("https://accounts.spotify.com/api/token", data=token_data, headers=token_headers)
 
         if response.status_code == 200:
-            print("got access token")
             data = response.json()
             return data['access_token']
         else:
