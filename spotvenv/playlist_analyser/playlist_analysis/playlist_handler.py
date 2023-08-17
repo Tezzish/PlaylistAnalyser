@@ -106,7 +106,7 @@ class PlaylistHandler:
         else:
             raise Exception('Failed to get access token from Spotify API')
         
-    def get_audio_features(self, song_id):
+    def get_audio_features(self, song_ids):
         """
         Returns the audio features JSON object for the given song ID.
 
@@ -122,13 +122,17 @@ class PlaylistHandler:
             "Authorization": f"Bearer {access_token}"
         }
 
-        # Make the request to the Spotify API
-        response = requests.get(f"https://api.spotify.com/v1/audio-features/{song_id}",
+        # Make the request to the Spotify API using comma separated song ids
+        response = requests.get(f"https://api.spotify.com/v1/audio-features?ids={','.join(song_ids)}",
                                 headers=headers)
         
         # Check if the request was successful
         if response.status_code == 200:
-            return response.json()
+            #return a dictionary of the song ids and the corresponding audio features
+            features = {}
+            for item in response.json()['audio_features']:
+                features[item['id']] = item
+            return features     
         else:
             print(f"Error: {response.status_code} - {response.text}")
     
@@ -219,31 +223,64 @@ class PlaylistHandler:
         Returns:
         tuple: A tuple containing the list of Song objects and the list of SongModel objects that were saved to the database.
         """
+
         song_models = []
-        songs_ret = []
+        mapped_songs = []
+
+        # get a set of the songs that don't exist in the database
+        song_ids = list(map(lambda song: song['track']['id'], songs))
+        song_ids_in_db = set(map(lambda song: song.id, SongModel.objects.filter(id__in=song_ids)))
+        song_ids_not_in_db = set(song_ids) - song_ids_in_db
+
+        # get the audio features for the songs not in the database using their ids
+        audio_features = self.get_audio_features(song_ids_not_in_db)    
+
         for song in songs:
-            audio_features = self.get_audio_features(song['track']['id'])
-            song_obj = Song(
-                song['track']['id'],
-                song['track']['external_urls']['spotify'],
-                song['track']['name'],
-                song['track']['artists'][0]['name'],
-                song['track']['album']['name'],
-                song['track']['album']['images'][0]['url'],
-                song['track']['duration_ms'],
-                audio_features['energy'],
-                audio_features['danceability'],
-                audio_features['valence'],
-                audio_features['tempo'],
-                audio_features['loudness'],
-                audio_features['acousticness']
-            )
-            #save the song to the database
-            song_model = self.save_song_to_db(song_obj)
-            #add the song model to the list
-            song_models.append(song_model)
-            songs_ret.append(song_obj)
-        return songs_ret, song_models
+            if song['track']['id'] in song_ids_in_db:
+                # get the song model from the database, and add it to the list
+                song_model = SongModel.objects.get(id=song['track']['id'])
+                song_models.append(song_model)
+                # get the song object from the song model
+                song_obj = Song(
+                    song_model.id,
+                    song_model.url,
+                    song_model.name,
+                    song_model.artist,
+                    song_model.album,
+                    song_model.thumbnail,
+                    song_model.duration,
+                    song_model.energy,
+                    song_model.danceability,
+                    song_model.valence,
+                    song_model.tempo,
+                    song_model.loudness,
+                    song_model.acousticness
+                )
+                # add the song object to the list
+                mapped_songs.append(song_obj)        
+                continue
+            else:
+                song_obj = Song(
+                    song['track']['id'],
+                    song['track']['external_urls']['spotify'],
+                    song['track']['name'],
+                    song['track']['artists'][0]['name'],
+                    song['track']['album']['name'],
+                    song['track']['album']['images'][0]['url'],
+                    song['track']['duration_ms'],
+                    audio_features[song['track']['id']]['energy'],
+                    audio_features[song['track']['id']]['danceability'],
+                    audio_features[song['track']['id']]['valence'],
+                    audio_features[song['track']['id']]['tempo'],
+                    audio_features[song['track']['id']]['loudness'],
+                    audio_features[song['track']['id']]['acousticness']
+                )
+                #save the song to the database
+                song_model = self.save_song_to_db(song_obj)
+                #add the song model to the list
+                song_models.append(song_model)
+            mapped_songs.append(song_obj)
+        return mapped_songs, song_models
     
     def get_avg_attributes(self, songs):
         """
