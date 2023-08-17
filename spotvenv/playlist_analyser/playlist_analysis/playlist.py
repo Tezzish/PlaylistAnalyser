@@ -4,7 +4,7 @@ import os
 
 class Playlist:
 
-    def __init__(self, id, url, name, description, author, thumbnail, songs):
+    def __init__(self, id, url, name, description, author, thumbnail, songs, avg_energy, avg_danceability, avg_acousticness, avg_valence, avg_loudness, avg_tempo, avg_duration):
         self._id = id
         self._url = url
         self._name = name
@@ -12,9 +12,17 @@ class Playlist:
         self._author = author
         self._thumbnail = thumbnail
         self._songs = songs
+        self._avg_energy = avg_energy
+        self._avg_danceability = avg_danceability
+        self._avg_acousticness = avg_acousticness
+        self._avg_valence = avg_valence
+        self._avg_loudness = avg_loudness
+        self._avg_tempo = avg_tempo
+        self._avg_duration = avg_duration
 
     def __str__(self):
-        return f"Playlist: {self.name} by {self.author} ({len(self.songs)} songs)"
+        # return name, author and the songs
+        return f"Playlist ID: {self._id}\nURL: {self._url}\nName: {self._name}\nDescription: {self._description}\nAuthor: {self._author}\nThumbnail: {self._thumbnail}\nSongs: {self._songs}"
 
     @property
     def id(self):
@@ -71,3 +79,70 @@ class Playlist:
     @songs.setter
     def songs(self, value):
         self._songs = value
+
+    @property
+    def avg_energy(self):
+        return self._avg_energy
+    
+    @avg_energy.setter
+    def avg_energy(self, value):
+        self._avg_energy = value
+
+    @property
+    def avg_danceability(self):
+        return self._avg_danceability
+    
+    @avg_danceability.setter
+    def avg_danceability(self, value):
+        self._avg_danceability = value
+
+    @property
+    def avg_acousticness(self):
+        return self._avg_acousticness
+    
+    @avg_acousticness.setter
+    def avg_acousticness(self, value):
+        self._avg_acousticness = value
+
+    @property
+    def avg_valence(self):
+        return self._avg_valence
+    
+    @avg_valence.setter
+    def avg_valence(self, value):
+        self._avg_valence = value
+    
+    @property
+    def avg_loudness(self):
+        return self._avg_loudness
+    
+    @avg_loudness.setter
+    def avg_loudness(self, value):
+        self._avg_loudness = value
+
+    @property
+    def avg_tempo(self):
+        return self._avg_tempo
+    
+    @avg_tempo.setter
+    def avg_tempo(self, value):
+        self._avg_tempo = value
+
+    @property
+    def avg_duration(self):
+        return self._avg_duration
+    
+    @avg_duration.setter
+    def avg_duration(self, value):
+        self._avg_duration = value
+
+    def get_avg_attributes(self):
+        return {
+            'energy': self._avg_energy,
+            'danceability': self._avg_danceability,
+            'acousticness': self._avg_acousticness,
+            'valence': self._avg_valence,
+            'loudness': self._avg_loudness,
+            'tempo': self._avg_tempo,
+            'duration': self._avg_duration
+        }

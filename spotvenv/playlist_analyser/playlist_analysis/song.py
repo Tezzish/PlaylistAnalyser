@@ -1,62 +1,23 @@
-import requests
-import dotenv
-import os
-import base64
-
 class Song:
 
-    def __init__(self, url):
-        self.url = url
-        
-        # Get the song's ID, title, artist and album from the spotify api
-        response = requests.get(f'https://api.spotify.com/v1/tracks/{self.get_song_id()}',
-                                headers={
-                                    'Authorization': f'Bearer {self.get_access_token()}'
-                                })
-        if response.status_code == 200:
-            data = response.json()
-            self.id = data['id']
-            self.title = data['name']
-            self.artist = data['artists'][0]['name']
-            self.album = data['album']['name']
-        else:
-            raise Exception('Failed to get song information from Spotify API')
+    def __init__(self, id, url, title, artist, album, thumbnail, duration, energy, danceability, valence, tempo, loudness, acousticness):
+        self._id = id
+        self._url = url
+        self._title = title
+        self._artist = artist
+        self._album = album
+        self._thumbnail = thumbnail
+        self._duration = duration
+        self._energy = energy
+        self._danceability = danceability
+        self._valence = valence
+        self._tempo = tempo
+        self._loudness = loudness
+        self._acousticness = acousticness
 
-    def get_song_id(self):
-        # Extract the song ID from the Spotify URL
-        return self.url.split('/')[-1]
-
-    def get_access_token(self):
-        # Get the Client ID and Client Secret from the .env file
-        dotenv.load_dotenv()
-
-        client_id = os.getenv('CLIENT_ID')
-        client_secret = os.getenv('CLIENT_SECRET')
-
-        
-
-       #puts the id and secret into the format asked for
-        token = f"{client_id}:{client_secret}"
-        tokenb64 = base64.b64encode(token.encode())
-
-        #data field in request
-        token_data = {
-            "grant_type": "client_credentials"
-        }
-
-        #header field in request
-        token_headers = {
-            "Authorization": f"Basic {tokenb64.decode()}"
-        }
-        #gets bearer token
-        response = requests.post("https://accounts.spotify.com/api/token", data=token_data, headers=token_headers)
-
-        if response.status_code == 200:
-            data = response.json()
-            return data['access_token']
-        else:
-            raise Exception('Failed to get access token from Spotify API')
-        
+    def __str__(self):
+        return f"Song ID: {self._id}\nURL: {self._url}\nTitle: {self._title}\nArtist: {self._artist}\nAlbum: {self._album}\nEnergy: {self._energy}\nDanceability: {self._danceability}\nAcousticness: {self._acousticness}\nTempo: {self._tempo}"
+      
     @property
     def id(self):
         return self._id
@@ -64,6 +25,14 @@ class Song:
     @id.setter
     def id(self, value):
         self._id = value
+
+    @property
+    def url(self):
+        return self._url
+
+    @url.setter
+    def url(self, value):
+        self._url = value
 
     @property
     def title(self):
@@ -88,3 +57,67 @@ class Song:
     @album.setter
     def album(self, value):
         self._album = value
+
+    @property
+    def thumbnail(self):
+        return self._thumbnail
+
+    @thumbnail.setter
+    def thumbnail(self, value):
+        self._thumbnail = value
+
+    @property
+    def duration(self):
+        return self._duration
+
+    @duration.setter
+    def duration(self, value):
+        self._duration = value
+
+    @property
+    def energy(self):
+        return self._energy
+
+    @energy.setter
+    def energy(self, value):
+        self._energy = value
+
+    @property
+    def danceability(self):
+        return self._danceability
+
+    @danceability.setter
+    def danceability(self, value):
+        self._danceability = value
+
+    @property
+    def valence(self):
+        return self._valence
+
+    @valence.setter
+    def valence(self, value):
+        self._valence = value
+
+    @property
+    def tempo(self):
+        return self._tempo
+
+    @tempo.setter
+    def tempo(self, value):
+        self._tempo = value
+
+    @property
+    def loudness(self):
+        return self._loudness
+
+    @loudness.setter
+    def loudness(self, value):
+        self._loudness = value
+
+    @property
+    def acousticness(self):
+        return self._acousticness
+
+    @acousticness.setter
+    def acousticness(self, value):
+        self._acousticness = value

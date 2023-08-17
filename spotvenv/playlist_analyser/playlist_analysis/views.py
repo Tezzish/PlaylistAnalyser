@@ -17,7 +17,7 @@ def analysis(request):
 
     context = {
         'playlist_link': playlist,
-
+        'all_playlists':playlist_handler.get_all_playlists()
     }
 
     template = loader.get_template('analysis.html')
