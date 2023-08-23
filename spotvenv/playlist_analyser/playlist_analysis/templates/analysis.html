@@ -6,9 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>
-        {{ playlist_link }}
-        {{ all_playlists }}
-    </h1>
+    <p id = "name">
+        {{ playlist.name }}
+    </p>
+    <p id = "energy"> 
+        {{ playlist.energy }}
+    </p>
+    <!-- Thumbnail of playlist -->
+    <img src="{{ playlist.thumbnail }}" >
 </body>
 </html>

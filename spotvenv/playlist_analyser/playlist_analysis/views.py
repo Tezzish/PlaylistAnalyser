@@ -16,7 +16,7 @@ def analysis(request):
     playlist = playlist_handler.get_playlist(playlist_link)
 
     context = {
-        'playlist_link': playlist,
+        'playlist': playlist,
         'all_playlists':playlist_handler.get_all_playlists()
     }
 
