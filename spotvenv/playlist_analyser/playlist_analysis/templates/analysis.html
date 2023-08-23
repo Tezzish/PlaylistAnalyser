@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="{% static 'analysis.css' %}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,13 +38,31 @@
     </style>
 </head>
 <body>
-    <!-- Thumbnail of playlist -->
-    <img src="{{ playlist.thumbnail }}">
-    {% for attr, value in avg_values.items %}
-        <p id="{{ attr }}">
-            {{ attr }}:
-            {{ value }}
-        </p>
-    {% endfor %}
+    <div class="spinner_container">
+        <div class="spinner"></div>
+    </div>
+    <div class = "container">
+        <!-- Title and author of playlist -->
+        <h1 id = "title">{{ playlist.name }}</h1>
+        <h2 id = "author">by {{ playlist.author }}</h2>
+
+        <!-- Thumbnail of playlist -->
+        <img id = "album_art" src="{{ playlist.thumbnail }}">
+
+        <!-- Button to display the attributes -->
+        <button id = "down_button">
+        </button>
+
+        <!-- Contains the analysis -->
+        <div id = "attribute_container">
+            {% for attr, value in avg_values.items %}
+                <p id="{{ attr }}">
+                    {{ attr }}:
+                    {{ value }}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="{% static 'analysisscript.js' %}"></script>
 </body>
 </html>
