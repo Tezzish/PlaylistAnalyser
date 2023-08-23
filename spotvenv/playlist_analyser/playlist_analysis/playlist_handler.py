@@ -186,8 +186,6 @@ class PlaylistHandler:
         #maps the songs to song objects
         mapped_songs, song_models = self.map_songs_to_song_objects(list(playlist_json['tracks']['items']))
 
-        print(mapped_songs)
-        print(mapped_songs[0].__dict__)
         #get avg attributes of the playlist
         avg_attributes = self.get_avg_attributes(mapped_songs)
 

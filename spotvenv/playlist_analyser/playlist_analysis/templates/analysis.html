@@ -6,12 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <p id = "name">
-        {{ playlist.name }}
-    </p>
-    <p id = "energy"> 
-        {{ playlist.energy }}
-    </p>
+    {% for attr, value in avg_values.items %}
+        <p id="{{ attr }}">
+            {{ attr }}:
+            {{ value }}
+        </p>
+    {% endfor %}
     <!-- Thumbnail of playlist -->
     <img src="{{ playlist.thumbnail }}" >
 </body>
