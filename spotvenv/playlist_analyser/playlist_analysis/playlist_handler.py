@@ -59,7 +59,13 @@ class PlaylistHandler:
         # Make the request to the Spotify API
         response = requests.get(f"https://api.spotify.com/v1/playlists/{self.get_playlist_id_from_link(playlist_link)}", 
                                 headers=headers)
-
+        
+        
+        
+        # if playlist is private or 404, throw an error
+        if response.status_code == 404 or json.loads(response.text)['public'] == 'false':
+            raise Exception('Playlist unavailable or private')
+        
         # Check if the request was successful
         if response.status_code == 200:
             # html escape the response
@@ -131,6 +137,9 @@ class PlaylistHandler:
             #return a dictionary of the song ids and the corresponding audio features
             features = {}
             for item in response.json()['audio_features']:
+                print(item)
+                if item == None:
+                    continue
                 features[item['id']] = item
             return features     
         else:
@@ -258,6 +267,8 @@ class PlaylistHandler:
                 mapped_songs.append(song_obj)        
                 continue
             else:
+                if (song['track']['id'] not in audio_features):
+                    continue
                 song_obj = Song(
                     song['track']['id'],
                     song['track']['external_urls']['spotify'],
