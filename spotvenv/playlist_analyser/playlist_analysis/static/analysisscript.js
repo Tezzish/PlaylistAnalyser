@@ -55,7 +55,11 @@ const mapped_values = Array.from(attributeContainers).map(function(attributeCont
 function setProgresses(mapped_values) {
     mapped_values.forEach(function(mapped_value) {
         const circle = mapped_value.circle;
-        const data = mapped_value.data;
+        // if attribute name is loudness, set the data to be the absolute value of the data
+        if (mapped_value.attributeName === 'Loudness') {
+            mapped_value.data = Math.log(Math.abs(mapped_value.data)) * 10;
+        }
+        const data = mapped_value.data <= 100 ?  mapped_value.data : Math.log(mapped_value.data) * 10;
         const percent = data;
         setProgress(percent, circle);
     });
@@ -65,24 +69,53 @@ function setProgress(percent, specified_circle) {
     const radius = specified_circle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
 
-    //if below 33% set color to green
-    if (percent < 35) {
-        specified_circle.style.stroke = '#00ff00';
-    }
-    //if below 66% set color to yellow
-    else if (percent < 65) {
-        specified_circle.style.stroke = '#ffff00';
-    }
-    //if below 100% set color to red
-    else {
-        specified_circle.style.stroke = '#ff0000';
-    }
+    // const hue = 300; // set the hue to purple
+    // const saturation = '50%'; // set the saturation to 50%
 
+    // create a canvas element and draw the image onto it
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  context.drawImage(image, 0, 0);
+
+  // get the pixel data of the image
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  // loop through the pixel data and count the number of occurrences of each color
+  const colorCounts = {};
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const color = `${r},${g},${b}`;
+    colorCounts[color] = colorCounts[color] ? colorCounts[color] + 1 : 1;
+  }
+
+  // find the color with the highest count, which is the dominant color
+  let dominantColor = null;
+  let maxCount = 0;
+  for (const color in colorCounts) {
+    if (colorCounts[color] > maxCount) {
+      dominantColor = color.split(',').map(Number);
+      maxCount = colorCounts[color];
+    }
+  }
+
+    // convert the RGB values of the dominant color to HSL format
+    const r = dominantColor[0];
+    const g = dominantColor[1];
+    const b = dominantColor[2];
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const hue = (max + min) / 2;
+    const saturation = '50%'; 
+
+    const lightness = `${100 - percent}%`;
+    specified_circle.style.stroke = `hsl(${hue}, ${saturation}, ${lightness})`;
     specified_circle.style.strokeDasharray = `${circumference} ${circumference}`;
-    specified_circle.style.strokeDashoffset = `${circumference}`;    
-    // const offset = circumference - percent / 100 * circumference;
-    // specified_circle.style.strokeDashoffset = offset;
-    // add a transitionend event listener to the parent div
+    specified_circle.style.strokeDashoffset = `${circumference}`;
 
     // use Intersection Observer API to detect when the circle is in the viewport
     const observer = new IntersectionObserver(function(entries) {
