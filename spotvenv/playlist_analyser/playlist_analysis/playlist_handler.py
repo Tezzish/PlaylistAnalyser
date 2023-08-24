@@ -318,6 +318,15 @@ class PlaylistHandler:
         return PlaylistModel.objects.all()
     
     def get_playlist_from_db(self, playlist_id):
+        """
+        Returns the playlist object for the given playlist id.
+
+        Parameters:
+        playlist_id (str): The Spotify playlist id.
+
+        Returns:
+        Playlist: The Playlist object.
+        """
         playlist_model = PlaylistModel.objects.get(id=playlist_id)
         songs = playlist_model.songs.all()
 

@@ -64,7 +64,11 @@
 }
 
 #album_art.shrink {
-    transform: scale(0.6) translateY(-200px);
+    transform: scale(0.6);
+}
+
+#album_art.translate {
+    transform: translateY(-200px) scale(0.6);
 }
 
 #down_button {
@@ -103,6 +107,33 @@
     border-color: transparent transparent #1DB954 transparent;
 }
 
-#attribute_container {
+#all_attributes_container {
     display: none;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    grid-column-gap: 20vw;
 }
+
+.attribute_paragraph {
+    font-weight: 900;
+    font-size: 36px;
+    margin: 0px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.progress-ring__circle {
+    transition: 0.35s stroke-dashoffset;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+input {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 80px;
+}
+  

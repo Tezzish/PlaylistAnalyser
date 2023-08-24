@@ -54,12 +54,36 @@
         </button>
 
         <!-- Contains the analysis -->
-        <div id = "attribute_container">
+        <div id = "all_attributes_container">
             {% for attr, value in avg_values.items %}
-                <p id="{{ attr }}">
-                    {{ attr }}:
-                    {{ value }}
-                </p>
+                <!-- contains the elements for each attribute -->
+                <div class = "attribute_container" id = "{{ attr }}_attribute_container" data-text-content = "{{ attr }}">
+                    <!-- contains the name of the attribute and the value -->
+                    <p class = "attribute_paragraph" id="{{ attr }}_paragraph">
+                        {{ attr }}
+                    </p>
+                    <!-- contains the value of the attribute -->
+                    <data value="{{ value }}" id = "{{ attr }}_value" class = "attribute_value"></data>
+                    <div>
+                        <svg
+                        class="progress-ring"
+                        width="120"
+                        height="120">
+                        <circle
+                            class="progress-ring__circle"
+                            id = "{{ attr }}_circle"
+                            stroke="white"
+                            stroke-width="4"
+                            fill="transparent"
+                            r="52"
+                            cx="60"
+                            cy="60"/>
+                        </svg>
+                    </div>
+                </div>
+
+
+
             {% endfor %}
         </div>
     </div>

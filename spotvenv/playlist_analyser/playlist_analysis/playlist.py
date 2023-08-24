@@ -156,11 +156,11 @@ class Playlist:
 
     def get_avg_attributes(self):
         return {
-            'energy': self._avg_energy,
-            'danceability': self._avg_danceability,
-            'acousticness': self._avg_acousticness,
-            'valence': self._avg_valence,
-            'loudness': self._avg_loudness,
-            'tempo': self._avg_tempo,
-            'duration': self._avg_duration
+            'Energy': round(self._avg_energy * 100, 2),
+            'Danceability': round(self._avg_danceability * 100, 2),
+            'Acousticness': round(self._avg_acousticness * 100, 2),
+            'Valence': round(self._avg_valence * 100, 2),
+            'Loudness': round(self._avg_loudness, 2),
+            'Tempo': round(self._avg_tempo, 2),
+            'Duration': round(self._avg_duration / 1000, 2)
         }
