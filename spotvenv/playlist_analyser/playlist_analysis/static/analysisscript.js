@@ -20,6 +20,5 @@ toggleButton.addEventListener('click', function() {
     title.style.display = 'none';
     author.style.display = 'none';
     // change size of image
-    image.style.width = '50%';
-    image.style.height = '50%';
+    image.classList.add('shrink');
 });
