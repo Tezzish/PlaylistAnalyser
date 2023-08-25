@@ -184,13 +184,23 @@ class PlaylistHandler:
         Returns:
         Playlist: The Playlist object.
         """
-        # if the playlist is in the database, return that
+        playlist_json = self.get_playlist_from_url(playlist_link)
+        # if the playlist is in the database and the playlist has the same songs as the one in the database, return the playlist from the database
         playlist_model = PlaylistModel.objects.filter(id=self.get_playlist_id_from_link(playlist_link))
         if playlist_model.exists():
-            return self.get_playlist_from_db(self.get_playlist_id_from_link(playlist_link))
+            # for each track id in playlist_json, check if it exists in the playlist_model
+            # if all songs exist in the playlist_model, return the playlist_model, else continue
+            for track in playlist_json['tracks']['items']:
+                if not playlist_model[0].songs.filter(id=track['track']['id']).exists():
+                    print("playlist exists in db but not all songs exist")
+                    break
+            else:
+                print("playlist exists in db")
+                return self.get_playlist_from_db(playlist_model[0].id)
+                    
+                
         
         #get the playlist from the api
-        playlist_json = self.get_playlist_from_url(playlist_link)
         
         #maps the songs to song objects
         mapped_songs, song_models = self.map_songs_to_song_objects(list(playlist_json['tracks']['items']))
@@ -213,7 +223,7 @@ class PlaylistHandler:
             avg_attributes['avg_valence'],
             avg_attributes['avg_loudness'],
             avg_attributes['avg_tempo'],
-            avg_attributes['avg_duration']
+            avg_attributes['avg_duration'],
         )
 
         self.save_playlist_to_db(playlist_obj, avg_attributes, song_models)

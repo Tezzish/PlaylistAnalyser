@@ -1,6 +1,4 @@
-import requests
-import dotenv
-import os
+import datetime
 
 class Playlist:
 
@@ -19,7 +17,6 @@ class Playlist:
         self._avg_loudness = avg_loudness
         self._avg_tempo = avg_tempo
         self._avg_duration = avg_duration
-
     def __str__(self):
         #return all attributes
         return f"Playlist(id={self._id}, url={self._url}, name={self._name}, description={self._description}, author={self._author}, thumbnail={self._thumbnail}, songs={self._songs}, avg_energy={self._avg_energy}, avg_danceability={self._avg_danceability}, avg_acousticness={self._avg_acousticness}, avg_valence={self._avg_valence}, avg_loudness={self._avg_loudness}, avg_tempo={self._avg_tempo}, avg_duration={self._avg_duration})"
