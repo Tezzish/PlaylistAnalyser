@@ -137,7 +137,6 @@ class PlaylistHandler:
             #return a dictionary of the song ids and the corresponding audio features
             features = {}
             for item in response.json()['audio_features']:
-                print(item)
                 if item == None:
                     continue
                 features[item['id']] = item
@@ -189,17 +188,15 @@ class PlaylistHandler:
         playlist_model = PlaylistModel.objects.filter(id=self.get_playlist_id_from_link(playlist_link))
         if playlist_model.exists():
             # for each track id in playlist_json, check if it exists in the playlist_model
-            # if all songs exist in the playlist_model, return the playlist_model, else continue
-            for track in playlist_json['tracks']['items']:
-                if not playlist_model[0].songs.filter(id=track['track']['id']).exists():
-                    print("playlist exists in db but not all songs exist")
-                    break
-            else:
-                print("playlist exists in db")
+            # if all of the songs are the same in the playlist_model, return the playlist_model, else continue
+            playlist_model_songs = playlist_model[0].songs.values_list('id', flat=True)
+            playlist_json_songs = [track['track']['id'] for track in playlist_json['tracks']['items']]
+
+            if sorted(playlist_model_songs) == sorted(playlist_json_songs):
                 return self.get_playlist_from_db(playlist_model[0].id)
-                    
-                
-        
+            else:
+                playlist_model.delete()
+
         #get the playlist from the api
         
         #maps the songs to song objects
@@ -391,4 +388,4 @@ class PlaylistHandler:
 
         playlist_model.save()
         playlist_model.songs.set(song_models)
-        print("saved")
+        
