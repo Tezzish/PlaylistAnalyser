@@ -43,7 +43,9 @@
     </div>
     <div class = "container">
         <!-- Title and author of playlist -->
-        <h1 id = "title">{{ playlist.name }}</h1>
+        <a href = "{{ playlist.url }}">
+            <h1 id = "title">{{ playlist.name }}</h1>
+        </a>
         <h2 id = "author">by {{ playlist.author }}</h2>
 
         <!-- Thumbnail of playlist -->
@@ -64,7 +66,7 @@
                     </p>
                     <!-- contains the value of the attribute -->
                     <data value="{{ value }}" id = "{{ attr }}_value" class = "attribute_value"></data>
-                    <div>
+                    <div class = "progress_ring_container">
                         <svg
                         class="progress-ring"
                         width="120"
@@ -79,6 +81,7 @@
                             r="52"
                             cx="60"
                             cy="60"/>
+                        <text x="50%" y="50%" class = "attribute_value_text" dominant-baseline="middle" text-anchor="middle">{{ value }}</text>
                         </svg>
                     </div>
                 </div>
