@@ -59,7 +59,7 @@
         <div id = "all_attributes_container">
             {% for attr, value in avg_values.items %}
                 <!-- contains the elements for each attribute -->
-                <div class = "attribute_container" id = "{{ attr }}_attribute_container" data-text-content = "{{ attr }}">
+                <div class = "attribute_container" id = "{{ attr }}_attribute_container" data-text-content = "{{attr}}">
                     <!-- contains the name of the attribute and the value -->
                     <p class = "attribute_paragraph" id="{{ attr }}_paragraph">
                         {{ attr }}
@@ -69,8 +69,8 @@
                     <div class = "progress_ring_container">
                         <svg
                         class="progress-ring"
-                        width="120"
-                        height="120">
+                        width="100"
+                        height="100">
                         <circle
                             class="progress-ring__circle"
                             id = "{{ attr }}_circle"
@@ -78,16 +78,13 @@
                             stroke-width="10"
                             stroke-linecap="round"
                             fill="transparent"
-                            r="52"
-                            cx="60"
-                            cy="60"/>
-                        <text x="50%" y="50%" class = "attribute_value_text" dominant-baseline="middle" text-anchor="middle">{{ value }}</text>
+                            r="37"
+                            cx="50"
+                            cy="50"/>
+                        <text x="50%" y="50%" class = "attribute_value_text" dominant-baseline="central" text-anchor="middle">{{ value }}</text>
                         </svg>
                     </div>
                 </div>
-
-
-
             {% endfor %}
         </div>
     </div>

@@ -19,9 +19,9 @@ toggleButton.addEventListener('click', function() {
     title.style.display = 'none';
     author.style.display = 'none';
     // change size of image
-    image.classList.add('translate');
+    image.classList.add('shrink');
     //display attribute container
-    attributeContainer.style.display = 'grid';
+    attributeContainer.style.display = 'flex';
 });
 
 //create a set of attribute names getting it from the html
@@ -43,7 +43,8 @@ const mapped_values = Array.from(attributeContainers).map(function(attributeCont
     const circle = attributeContainer.querySelector('circle');
     const data = Math.abs(attributeContainer.querySelector('data').value);
     console.log(data);  
-    const attributeName = attributeContainer.textContent.trim();
+    const attributeName = attributeContainer.dataset.textContent;
+    console.log(attributeName);
     return {
         circle: circle,
         data: data,
@@ -58,8 +59,9 @@ function setProgresses(mapped_values) {
         // if attribute name is loudness, set the data to be the absolute value of the data
         if (mapped_value.attributeName === 'Loudness') {
             mapped_value.data = Math.log(Math.abs(mapped_value.data)) * 10;
+
         }
-        const data = mapped_value.data <= 100 ?  mapped_value.data : Math.log(mapped_value.data) * 10;
+        const data = mapped_value.data <= 100 ? mapped_value.data : Math.log(mapped_value.data) * 10;
         const percent = data;
         setProgress(percent, circle);
     });
@@ -109,7 +111,7 @@ function setProgress(percent, specified_circle) {
     const b = dominantColor[2];
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    const hue = (max + min) / 2;
+    const hue = 290;
     const saturation = '50%'; 
 
     const lightness = `${100 - percent}%`;

@@ -64,11 +64,7 @@
 }
 
 #album_art.shrink {
-    transform: scale(0.6);
-}
-
-#album_art.translate {
-    transform:  scale(0.6);
+    transform: scale(0.6) translateY(-100px); 
 }
 
 #down_button {
@@ -101,6 +97,8 @@
 
 #down_button:hover {
     background-color: white;
+    /* green border */
+    border: 8px solid #1DB954;
 }
 
 #down_button:hover::after {
@@ -108,38 +106,28 @@
 }
 
 #all_attributes_container {
+    overflow: auto; /* add this line to enable scrolling */
     display: none;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-areas:
-    "attr1 attr2 attr3"
-    "attr4 attr5 attr6"
-    "attr7 attr7 attr7";
-    justify-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    grid-column-gap: 20vw;
+    padding: 20px;
 }
 
 .attribute_container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 
 .attribute_paragraph {
     font-weight: 900;
-    font-size: 36px;
+    font-size: 24px;
     margin: 0px;
+    margin-bottom: 12px;
     color: white;
     font-family: 'Montserrat', sans-serif;
-}
-
-.progress_ring_div {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin-top: 50px;
 }
 
 .progress-ring {
@@ -154,9 +142,12 @@
 
 .attribute_value_text {
     font-weight: 900;
-    font-size: 24px;
+    font-size: 20px;
     margin: 0px;
     fill: white;
     font-family: 'Montserrat', sans-serif;
 }
   
+a {
+    text-decoration: none;
+}
