@@ -110,6 +110,7 @@ class PlaylistHandler:
             data = response.json()
             return data['access_token']
         else:
+            print(f"Error: {response.status_code} - {response.text}")
             raise Exception('Failed to get access token from Spotify API')
         
     def get_audio_features(self, song_ids):
@@ -202,9 +203,6 @@ class PlaylistHandler:
         #maps the songs to song objects
         mapped_songs, song_models = self.map_songs_to_song_objects(list(playlist_json['tracks']['items']))
 
-        #get avg attributes of the playlist
-        avg_attributes = self.get_avg_attributes(mapped_songs)
-
         #create playlist object
         playlist_obj = Playlist(
             playlist_json['id'],
@@ -214,16 +212,9 @@ class PlaylistHandler:
             playlist_json['owner']['display_name'],
             playlist_json['images'][0]['url'],
             mapped_songs,
-            avg_attributes['avg_energy'],
-            avg_attributes['avg_danceability'],
-            avg_attributes['avg_acousticness'],
-            avg_attributes['avg_valence'],
-            avg_attributes['avg_loudness'],
-            avg_attributes['avg_tempo'],
-            avg_attributes['avg_duration'],
         )
 
-        self.save_playlist_to_db(playlist_obj, avg_attributes, song_models)
+        self.save_playlist_to_db(playlist_obj, song_models)
 
         return playlist_obj
     
@@ -298,40 +289,6 @@ class PlaylistHandler:
             mapped_songs.append(song_obj)
         return mapped_songs, song_models
     
-    def get_avg_attributes(self, songs):
-        """
-        Returns a dictionary containing the average audio features of the given list of songs.
-
-        Parameters:
-        songs (list): The list of songs to be analyzed.
-
-        Returns:
-        dict: A dictionary containing the average audio features.
-        """
-        #make pandas df from dictionary
-        df = pd.DataFrame([song.__dict__ for song in songs])
-
-        #remove the underscores from the column names
-        df.columns = df.columns.str.replace('_', '')
-
-        avg_energy = df['energy'].mean()
-        avg_danceability = df['danceability'].mean()
-        avg_acousticness = df['acousticness'].mean()
-        avg_valence = df['valence'].mean()
-        avg_loudness = df['loudness'].mean()
-        avg_tempo = df['tempo'].mean()
-        avg_duration = df['duration'].mean()
-
-        return {
-            'avg_energy': avg_energy,
-            'avg_danceability': avg_danceability,
-            'avg_acousticness': avg_acousticness,
-            'avg_valence': avg_valence,
-            'avg_loudness': avg_loudness,
-            'avg_tempo': avg_tempo,
-            'avg_duration': avg_duration
-        }
-    
     def get_all_playlists(self):
         return PlaylistModel.objects.all()
     
@@ -355,19 +312,12 @@ class PlaylistHandler:
             playlist_model.description,
             playlist_model.author,
             playlist_model.thumbnail,
-            songs,
-            playlist_model.avg_energy,
-            playlist_model.avg_danceability,
-            playlist_model.avg_acousticness,
-            playlist_model.avg_valence,
-            playlist_model.avg_loudness,
-            playlist_model.avg_tempo,
-            playlist_model.avg_duration
+            songs
         )
 
         return playlist_obj
     
-    def save_playlist_to_db(self, playlist_obj, avg_attributes, song_models):
+    def save_playlist_to_db(self, playlist_obj, song_models):
         
         #save as playlist model
         playlist_model = PlaylistModel(
@@ -377,13 +327,6 @@ class PlaylistHandler:
             description = playlist_obj.description,
             author = playlist_obj.author,
             thumbnail = playlist_obj.thumbnail,
-            avg_energy = avg_attributes['avg_energy'],
-            avg_danceability = avg_attributes['avg_danceability'],
-            avg_acousticness = avg_attributes['avg_acousticness'],
-            avg_valence = avg_attributes['avg_valence'],
-            avg_loudness = avg_attributes['avg_loudness'],
-            avg_tempo = avg_attributes['avg_tempo'],
-            avg_duration = avg_attributes['avg_duration']
         )
 
         playlist_model.save()

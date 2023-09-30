@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{% static 'index.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist analysis</title>
+
+</head>
+<body>
+    <div class = "container">
+    <h1>
+        Enter playlist link
+    </h1>
+    <form action = "analysis/" method = "post">
+        {% csrf_token %}
+        <input id = "search-bar" name = "playlist_link" type="text" placeholder="Eg: https://open.spotify.com/playlist/37i9dQZEVXbMDoHDwVN2tF" autocomplete="on">
+        <!--the search bar button-->
+        <input id = "search-button" type="image" value = "Analyse!">    
+    </form>
+    </div>
+</body>
+</html>

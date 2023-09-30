@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{% static 'analysis.css' %}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ playlist.name }} analysis</title>
+    <style>
+         body {
+            position: relative;
+            /* filter: blur(45px); */
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            border: none;
+            background-color: #000;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ playlist.thumbnail }}');
+            background-size: contain;
+            background-position: center;
+            transform: scale(1.1);
+            filter: blur(45px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner_container">
+        <div class="spinner"></div>
+    </div>
+    <div class = "container">
+        <!-- Title and author of playlist -->
+        <a href = "{{ playlist.url }}">
+            <h1 id = "title">{{ playlist.name }}</h1>
+        </a>
+        <h2 id = "author">by {{ playlist.author }}</h2>
+
+        <!-- Thumbnail of playlist -->
+        <img id = "album_art" src="{{ playlist.thumbnail }}">
+
+        <!-- Button to display the attributes -->
+        <button id = "down_button">
+        </button>
+
+        <!-- Contains the analysis -->
+        <div id = "all_attributes_container">
+            {% for attr, value in avg_values.items %}
+                <!-- contains the elements for each attribute -->
+                <div class = "attribute_container" id = "{{ attr }}_attribute_container" data-text-content = "{{attr}}">
+                    <!-- contains the name of the attribute and the value -->
+                    <p class = "attribute_paragraph" id="{{ attr }}_paragraph">
+                        {{ attr }}
+                    </p>
+                    <!-- contains the value of the attribute -->
+                    <data value="{{ value }}" id = "{{ attr }}_value" class = "attribute_value"></data>
+                    <div class = "progress_ring_container">
+                        <svg
+                        class="progress-ring"
+                        width="100"
+                        height="100">
+                        <circle
+                            class="progress-ring__circle"
+                            id = "{{ attr }}_circle"
+                            stroke="white"
+                            stroke-width="10"
+                            stroke-linecap="round"
+                            fill="transparent"
+                            r="37"
+                            cx="50"
+                            cy="50"/>
+                        <text x="50%" y="50%" class = "attribute_value_text" dominant-baseline="central" text-anchor="middle">{{ value }}</text>
+                        </svg>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="{% static 'analysisscript.js' %}"></script>
+</body>
+</html>
