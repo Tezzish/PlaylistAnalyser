@@ -98,7 +98,7 @@ class Playlist:
             'Valence' : round(self.get_avg_of_attribute('valence') * 100, 2),
             'Loudness' : round(self.get_avg_of_attribute('loudness'), 2),
             'Tempo' : round(self.get_avg_of_attribute('tempo'), 2),
-            'Duration' : round(self.get_avg_of_attribute('duration') / len(self._songs), 2),
+            'Duration' : round(self.get_avg_of_attribute('duration') / 1000, 2),
         }
     
     def get_max_attributes(self):
