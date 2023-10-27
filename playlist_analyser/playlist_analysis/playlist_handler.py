@@ -260,9 +260,6 @@ class PlaylistHandler:
             mapped_songs.append(song_obj)
         return mapped_songs, song_models
     
-    def get_all_playlists(self):
-        return PlaylistModel.objects.all()
-    
     def get_playlist_from_db(self, playlist_id):
         """
         Returns the playlist object for the given playlist id.
