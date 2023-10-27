@@ -4,7 +4,6 @@ import json
 import os
 
 import dotenv
-import pandas as pd
 import requests
 
 from .models import Playlist as PlaylistModel
@@ -67,7 +66,7 @@ class PlaylistHandler:
             raise Exception('Playlist unavailable or private')
         
         # Check if the request was successful
-        if response.status_code == 200:
+        elif response.status_code == 200:
             # html escape the response
             response_text = html.unescape(response.text)
             # convert the response to a JSON object
@@ -75,7 +74,7 @@ class PlaylistHandler:
             return response_json
         
         else:
-            print(f"Error: {response.status_code} - {response.text}")
+            raise Exception('Failed to get playlist from Spotify API')
 
     def get_access_token(self):
         """
@@ -144,35 +143,7 @@ class PlaylistHandler:
             return features     
         else:
             print(f"Error: {response.status_code} - {response.text}")
-    
-    def save_song_to_db(self, song):
-        """
-        Saves the given song object to the database.
-
-        Parameters:
-        song (Song): The Song object to be saved.
-
-        Returns:
-        SongModel: The SongModel object that was saved to the database.
-        """
-        song_model = SongModel(
-            id=song.id,
-            url=song.url,
-            name=song.title,
-            artist=song.artist,
-            album=song.album,
-            thumbnail=song.thumbnail,
-            duration=song.duration,
-            energy=song.energy,
-            danceability=song.danceability,
-            valence=song.valence,
-            tempo=song.tempo,
-            loudness=song.loudness,
-            acousticness=song.acousticness
-        )
-        song_model.save()
-
-        return song_model
+            raise Exception('Failed to get audio features from Spotify API')
         
     def get_playlist(self, playlist_link):
         """
@@ -331,4 +302,33 @@ class PlaylistHandler:
 
         playlist_model.save()
         playlist_model.songs.set(song_models)
+
+    def save_song_to_db(self, song):
+        """
+        Saves the given song object to the database.
+
+        Parameters:
+        song (Song): The Song object to be saved.
+
+        Returns:
+        SongModel: The SongModel object that was saved to the database.
+        """
+        song_model = SongModel(
+            id=song.id,
+            url=song.url,
+            name=song.title,
+            artist=song.artist,
+            album=song.album,
+            thumbnail=song.thumbnail,
+            duration=song.duration,
+            energy=song.energy,
+            danceability=song.danceability,
+            valence=song.valence,
+            tempo=song.tempo,
+            loudness=song.loudness,
+            acousticness=song.acousticness
+        )
+        song_model.save()
+
+        return song_model
         
