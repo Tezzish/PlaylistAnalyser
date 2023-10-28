@@ -16,7 +16,7 @@ const image = document.getElementById('album_art');
 
 toggleButton.addEventListener('click', function() {
     toggleButton.style.display = 'none';
-    title.style.display = 'none';
+    title.classList.add('shrink');
     author.style.display = 'none';
     // change size of image
     image.classList.add('shrink');

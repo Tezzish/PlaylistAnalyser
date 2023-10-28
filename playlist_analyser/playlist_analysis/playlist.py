@@ -92,22 +92,22 @@ class Playlist:
     def get_avg_attributes(self):
         print(round(self.get_avg_of_attribute('duration'), 2))
         return {
-            'Energy' : round(self.get_avg_of_attribute('energy') * 100, 2),
-            'Danceability' : round(self.get_avg_of_attribute('danceability') * 100, 2),
-            'Acousticness' : round(self.get_avg_of_attribute('acousticness') * 100, 2),
-            'Valence' : round(self.get_avg_of_attribute('valence') * 100, 2),
+            'Energy' : round(self.get_avg_of_attribute('energy') * 100),
+            'Danceability' : round(self.get_avg_of_attribute('danceability') * 100),
+            'Acousticness' : round(self.get_avg_of_attribute('acousticness') * 100),
+            'Valence' : round(self.get_avg_of_attribute('valence') * 100),
             'Loudness' : round(self.get_avg_of_attribute('loudness'), 2),
-            'Tempo' : round(self.get_avg_of_attribute('tempo'), 2),
-            'Duration' : round(self.get_avg_of_attribute('duration') / 1000, 2),
+            'Tempo' : round(self.get_avg_of_attribute('tempo')),
+            'Duration' : round(self.get_avg_of_attribute('duration') / 1000),
         }
     
     def get_max_attributes(self):
         return {
-            'Energy' : round(self.get_max_of_attribute('energy') * 100, 2),
-            'Danceability' : round(self.get_max_of_attribute('danceability') * 100, 2),
-            'Acousticness' : round(self.get_max_of_attribute('acousticness') * 100, 2),
-            'Valence' : round(self.get_max_of_attribute('valence') * 100, 2),
+            'Energy' : round(self.get_max_of_attribute('energy') * 100),
+            'Danceability' : round(self.get_max_of_attribute('danceability') * 100),
+            'Acousticness' : round(self.get_max_of_attribute('acousticness') * 100),
+            'Valence' : round(self.get_max_of_attribute('valence') * 100),
             'Loudness' : round(self.get_max_of_attribute('loudness'), 2),
-            'Tempo' : round(self.get_max_of_attribute('tempo'), 2),
-            'Duration' : round(self.get_max_of_attribute('duration') / 1000, 2),
+            'Tempo' : round(self.get_max_of_attribute('tempo')),
+            'Duration' : round(self.get_max_of_attribute('duration') / 1000),
         }

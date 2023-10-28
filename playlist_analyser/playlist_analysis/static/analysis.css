@@ -36,12 +36,16 @@
 }
 
 #title {
+    margin-top: 0px;
     font-weight: 900;
     font-size: 100px;
-    margin-top: -128px;
     margin-bottom: 0px;
     font-family: 'Montserrat', sans-serif;
     color: white;
+}
+
+#title.shrink {
+    transform: scale(0.6) translateY(-100px);
 }
 
 #author {
