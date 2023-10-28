@@ -29,7 +29,8 @@ jobs:
     - name: Run Tests
       run: |
         ls
-        cd ../
-        echo eeeeeeeeeeeeeee
+        cd playlist_analyser
+        echo eeeeeeeeee
         ls
+        cd ../
         python playlist_analyser/manage.py test
