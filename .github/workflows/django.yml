@@ -28,5 +28,7 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
+        ls
         cd ../
+        ls
         python playlist_analyser/manage.py test
