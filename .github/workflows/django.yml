@@ -27,4 +27,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        python PlaylistAnalyser/playlist_analyser/manage.py test
+        python ../playlist_analyser/manage.py test
