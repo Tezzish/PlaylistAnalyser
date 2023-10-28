@@ -103,11 +103,11 @@ class Playlist:
     
     def get_max_attributes(self):
         return {
-            'Energy' : self.get_max_of_attribute('energy'),
-            'Danceability' : self.get_max_of_attribute('danceability'),
-            'Acousticness' : self.get_max_of_attribute('acousticness'),
-            'Valence' : self.get_max_of_attribute('valence'),
-            'Loudness' : self.get_max_of_attribute('loudness'),
-            'Tempo' : self.get_max_of_attribute('tempo'),
-            'Duration' : self.get_max_of_attribute('duration'),
+            'Energy' : round(self.get_max_of_attribute('energy') * 100, 2),
+            'Danceability' : round(self.get_max_of_attribute('danceability') * 100, 2),
+            'Acousticness' : round(self.get_max_of_attribute('acousticness') * 100, 2),
+            'Valence' : round(self.get_max_of_attribute('valence') * 100, 2),
+            'Loudness' : round(self.get_max_of_attribute('loudness'), 2),
+            'Tempo' : round(self.get_max_of_attribute('tempo'), 2),
+            'Duration' : round(self.get_max_of_attribute('duration') / 1000, 2),
         }

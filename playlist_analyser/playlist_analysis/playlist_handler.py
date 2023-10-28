@@ -39,7 +39,7 @@ class PlaylistHandler:
         str: The playlist ID.
         """
         return playlist_link.split('/')[-1].split('?')[0]
-
+    
     def get_playlist_from_url(self, playlist_link):
         """
         Returns the playlist JSON object from the Spotify API for the given playlist link.
