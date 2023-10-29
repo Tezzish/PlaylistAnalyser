@@ -98,5 +98,3 @@ class PlaylistTestCase(TestCase):
         self.assertAlmostEqual(max_attributes['Loudness'][0], -2.58, 0)
         self.assertEqual(max_attributes['Tempo'][0], 180, 0)
         self.assertEqual(max_attributes['Duration'][0], 475, 0)
-
-    
