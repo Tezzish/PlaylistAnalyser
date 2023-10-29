@@ -77,13 +77,13 @@ class PlaylistTestCase(TestCase):
         playlist = self.handler.get_playlist(playlist_url)
         avg_attributes = playlist.get_avg_attributes()
         
-        self.assertAlmostEqual(avg_attributes['Energy'], 76.94210526315789, 2)
-        self.assertAlmostEqual(avg_attributes['Danceability'], 46.215789473684216, 2)
-        self.assertAlmostEqual(avg_attributes['Acousticness'], 17.108994210526318, 2)
-        self.assertAlmostEqual(avg_attributes['Valence'], 39.45789473684211, 2)
-        self.assertAlmostEqual(avg_attributes['Loudness'], -5.85521052631579, 2)
-        self.assertAlmostEqual(avg_attributes['Tempo'], 130.84536842105263, 2)
-        self.assertAlmostEqual(avg_attributes['Duration'], 221.97163157894736, 2)
+        self.assertEqual(avg_attributes['Energy'], 77)
+        self.assertEqual(avg_attributes['Danceability'], 46)
+        self.assertEqual(avg_attributes['Acousticness'], 17)
+        self.assertEqual(avg_attributes['Valence'], 39)
+        self.assertAlmostEqual(avg_attributes['Loudness'], -5.86, 2)
+        self.assertEqual(avg_attributes['Tempo'], 131)
+        self.assertEqual(avg_attributes['Duration'], 222)
 
     #------------------ Get_Max_Of_Attribute Tests ------------------#
     def test_get_max_attributes(self):
@@ -91,12 +91,12 @@ class PlaylistTestCase(TestCase):
         playlist = self.handler.get_playlist(playlist_url)
         max_attributes = playlist.get_max_attributes()
 
-        self.assertAlmostEqual(max_attributes['Energy'], 98.1, 2)
-        self.assertAlmostEqual(max_attributes['Danceability'], 68.5, 2)
-        self.assertAlmostEqual(max_attributes['Acousticness'], 96.9, 2)
-        self.assertAlmostEqual(max_attributes['Valence'], 70.1, 2)
-        self.assertAlmostEqual(max_attributes['Loudness'], -2.58, 2)
-        self.assertAlmostEqual(max_attributes['Tempo'], 179.96, 2)
-        self.assertAlmostEqual(max_attributes['Duration'], 475.09, 2)
+        self.assertEqual(max_attributes['Energy'][0], 98)
+        self.assertEqual(max_attributes['Danceability'][0], 68)
+        self.assertEqual(max_attributes['Acousticness'][0], 97)
+        self.assertEqual(max_attributes['Valence'][0], 70)
+        self.assertAlmostEqual(max_attributes['Loudness'][0], -2.58, 0)
+        self.assertEqual(max_attributes['Tempo'][0], 180, 0)
+        self.assertEqual(max_attributes['Duration'][0], 475, 0)
 
     

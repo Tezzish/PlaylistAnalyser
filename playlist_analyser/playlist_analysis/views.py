@@ -20,6 +20,7 @@ def analysis(request):
     context = {
         'playlist': playlist,
         'avg_values': playlist.get_avg_attributes(),
+        'max_values': playlist.get_max_attributes(),
     }
 
     template = loader.get_template('analysis.html')

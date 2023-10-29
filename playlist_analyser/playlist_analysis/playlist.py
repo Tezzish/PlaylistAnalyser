@@ -87,7 +87,8 @@ class Playlist:
     
     def get_max_of_attribute(self, attribute):
         # get the max of the attribute for all songs in the playlist using functional programming
-        return max(map(lambda song: getattr(song, attribute), self._songs))
+        # return a tuple of the value and the song object
+        return max(map(lambda song: (getattr(song, attribute), song), self._songs))
 
     def get_avg_attributes(self):
         print(round(self.get_avg_of_attribute('duration'), 2))
@@ -102,12 +103,19 @@ class Playlist:
         }
     
     def get_max_attributes(self):
+        energy = self.get_max_of_attribute('energy')
+        danceability = self.get_max_of_attribute('danceability')
+        acousticness = self.get_max_of_attribute('acousticness')
+        valence = self.get_max_of_attribute('valence')
+        loudness = self.get_max_of_attribute('loudness')
+        tempo = self.get_max_of_attribute('tempo')
+        duration = self.get_max_of_attribute('duration')
         return {
-            'Energy' : round(self.get_max_of_attribute('energy') * 100),
-            'Danceability' : round(self.get_max_of_attribute('danceability') * 100),
-            'Acousticness' : round(self.get_max_of_attribute('acousticness') * 100),
-            'Valence' : round(self.get_max_of_attribute('valence') * 100),
-            'Loudness' : round(self.get_max_of_attribute('loudness'), 2),
-            'Tempo' : round(self.get_max_of_attribute('tempo')),
-            'Duration' : round(self.get_max_of_attribute('duration') / 1000),
+            'Energy' : (round(energy[0] * 100), energy[1].url),
+            'Danceability' : (round(danceability[0] * 100), danceability[1].url),
+            'Acousticness' : (round(acousticness[0] * 100), acousticness[1].url),
+            'Valence' : (round(valence[0] * 100), valence[1].url),
+            'Loudness' : (round(loudness[0], 2), loudness[1].url),
+            'Tempo' : (round(tempo[0]), tempo[1].url),
+            'Duration' : (round(duration[0] / 1000), duration[1].url),
         }

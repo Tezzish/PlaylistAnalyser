@@ -1,4 +1,5 @@
 spotvenv/
 playlist_analyser/playlist_analyser/__pycache__
 playlist_analyser/playlist_analysis/__pycache__
+playlist_analyser/db.sqlite3
 
