@@ -89,10 +89,9 @@ class Playlist:
     def get_max_of_attribute(self, attribute):
         # get the max of the attribute for all songs in the playlist using functional programming
         # return a tuple of the value and the song object
-        return max(map(lambda song: (getattr(song, attribute), song), self._songs))
+        return max(map(lambda song: (getattr(song, attribute), song), self._songs), key=lambda song: song[0])
 
     def get_avg_attributes(self):
-        print(round(self.get_avg_of_attribute('duration'), 2))
         return {
             'Energy' : round(self.get_avg_of_attribute('energy') * 100),
             'Danceability' : round(self.get_avg_of_attribute('danceability') * 100),
@@ -104,8 +103,8 @@ class Playlist:
         }
     
     def get_max_attributes(self):
-        # we save the values because we need to also return the song url
-        # so one call instead of two
+        # we save the values because we need to also return the song url so it's one call instead of two
+        print(getattr(self.songs[0], 'danceability'))
         energy = self.get_max_of_attribute('energy')
         danceability = self.get_max_of_attribute('danceability')
         acousticness = self.get_max_of_attribute('acousticness')
