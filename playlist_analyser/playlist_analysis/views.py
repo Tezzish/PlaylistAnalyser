@@ -15,7 +15,12 @@ def index(request):
 def analysis(request):
     playlist_link = request.POST.get('playlist_link')
 
-    playlist = playlist_handler.get_playlist(playlist_link)
+    try:
+        playlist = playlist_handler.get_playlist(playlist_link)
+    except Exception as e:
+        print(e)
+        return render(request, 'error.html')
+
 
     context = {
         'playlist': playlist,

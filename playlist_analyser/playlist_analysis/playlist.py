@@ -10,6 +10,7 @@ class Playlist:
         self._author = author
         self._thumbnail = thumbnail
         self._songs = songs
+
     def __str__(self):
         #return all attributes
         return f"Playlist(id={self._id}, url={self._url}, name={self._name}, description={self._description}, author={self._author}, thumbnail={self._thumbnail}, songs={self._songs}, avg_energy={self._avg_energy}, avg_danceability={self._avg_danceability}, avg_acousticness={self._avg_acousticness}, avg_valence={self._avg_valence}, avg_loudness={self._avg_loudness}, avg_tempo={self._avg_tempo}, avg_duration={self._avg_duration})"
@@ -103,6 +104,8 @@ class Playlist:
         }
     
     def get_max_attributes(self):
+        # we save the values because we need to also return the song url
+        # so one call instead of two
         energy = self.get_max_of_attribute('energy')
         danceability = self.get_max_of_attribute('danceability')
         acousticness = self.get_max_of_attribute('acousticness')

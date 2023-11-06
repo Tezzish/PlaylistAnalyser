@@ -41,6 +41,9 @@ class PlaylistHandler:
         Returns:
         str: The playlist ID.
         """
+        # check if the playlist link is in the valid format
+        if not playlist_link.startswith('https://open.spotify.com/playlist/'):
+            raise Exception('Invalid playlist link')
         return playlist_link.split('/')[-1].split('?')[0]
     
     def get_playlist_from_url(self, playlist_link):
@@ -160,8 +163,8 @@ class PlaylistHandler:
         """
         playlist_json = self.get_playlist_from_url(playlist_link)
         # if the playlist is in the database and the playlist has the same songs as the one in the database, return the playlist from the database
-        playlist_model = self.get_playlist_from_db(playlist_json['id'])
-        if playlist_model.exists():
+        try:
+            playlist_model = self.get_playlist_from_db(playlist_json['id'])
             # for each track id in the playlist_json, check if it exists in the playlist_model
             # if all of the songs are the same in the playlist_model, return the playlist_model, else continue
             playlist_model_songs = playlist_model[0].songs.values_list('id', flat=True)
@@ -171,6 +174,8 @@ class PlaylistHandler:
                 return self.get_playlist_from_db(playlist_model[0].id)
             else:
                 playlist_model.delete()
+        except Exception as e:
+            pass
         
         #maps the songs to song objects
         mapped_songs, song_models = self.map_songs_to_song_objects(list(playlist_json['tracks']['items']))
@@ -202,6 +207,8 @@ class PlaylistHandler:
         Playlist: The Playlist object.
         """
         playlist_model = PlaylistModel.objects.get(id=playlist_id)
+        if playlist_model is None:
+            raise Exception('Playlist not found in database')
         songs = playlist_model.songs.all()
 
         playlist_obj = Playlist(
@@ -236,7 +243,10 @@ class PlaylistHandler:
         song_ids_not_in_db = set(song_ids) - song_ids_in_db
 
         # get the audio features for the songs not in the database using their ids
-        audio_features = self.get_audio_features(song_ids_not_in_db)    
+        try:
+            audio_features = self.get_audio_features(song_ids_not_in_db)
+        except Exception as e:
+            audio_features = {}
 
         for song in songs:
             if song['track']['id'] in song_ids_in_db:
