@@ -24,8 +24,11 @@ class PlaylistHandler:
     get_playlist_from_url(playlist_link): Returns the playlist JSON object from the Spotify API for the given playlist link.
     get_access_token(): Returns the access token required to make requests to the Spotify API.
     get_audio_features(song_id): Returns the audio features JSON object for the given song ID.
-    save_song_to_db(song): Saves the given song object to the database.
     get_playlist(playlist_link): Returns the playlist object for the given playlist link.
+    get_playlist_from_db(playlist_id): Returns the playlist object for the given playlist id.
+    map_songs_to_song_objects(songs): Maps the given list of songs to Song objects and saves them to the database.
+    save_playlist_to_db(playlist_obj, song_models): Saves the given playlist object to the database.
+    save_song_to_db(song): Saves the given song object to the database.
     """
     
     def get_playlist_id_from_link(self, playlist_link):
@@ -157,9 +160,9 @@ class PlaylistHandler:
         """
         playlist_json = self.get_playlist_from_url(playlist_link)
         # if the playlist is in the database and the playlist has the same songs as the one in the database, return the playlist from the database
-        playlist_model = PlaylistModel.objects.filter(id=self.get_playlist_id_from_link(playlist_link))
+        playlist_model = self.get_playlist_from_db(playlist_json['id'])
         if playlist_model.exists():
-            # for each track id in playlist_json, check if it exists in the playlist_model
+            # for each track id in the playlist_json, check if it exists in the playlist_model
             # if all of the songs are the same in the playlist_model, return the playlist_model, else continue
             playlist_model_songs = playlist_model[0].songs.values_list('id', flat=True)
             playlist_json_songs = [track['track']['id'] for track in playlist_json['tracks']['items']]
@@ -168,8 +171,6 @@ class PlaylistHandler:
                 return self.get_playlist_from_db(playlist_model[0].id)
             else:
                 playlist_model.delete()
-
-        #get the playlist from the api
         
         #maps the songs to song objects
         mapped_songs, song_models = self.map_songs_to_song_objects(list(playlist_json['tracks']['items']))
@@ -185,7 +186,33 @@ class PlaylistHandler:
             mapped_songs,
         )
 
+        #save to database
         self.save_playlist_to_db(playlist_obj, song_models)
+
+        return playlist_obj
+    
+    def get_playlist_from_db(self, playlist_id):
+        """
+        Returns the playlist object for the given playlist id.
+
+        Parameters:
+        playlist_id (str): The Spotify playlist id.
+
+        Returns:
+        Playlist: The Playlist object.
+        """
+        playlist_model = PlaylistModel.objects.get(id=playlist_id)
+        songs = playlist_model.songs.all()
+
+        playlist_obj = Playlist(
+            playlist_model.id,
+            playlist_model.url,
+            playlist_model.name,
+            playlist_model.description,
+            playlist_model.author,
+            playlist_model.thumbnail,
+            songs
+        )
 
         return playlist_obj
     
@@ -259,31 +286,6 @@ class PlaylistHandler:
                 song_models.append(song_model)
             mapped_songs.append(song_obj)
         return mapped_songs, song_models
-    
-    def get_playlist_from_db(self, playlist_id):
-        """
-        Returns the playlist object for the given playlist id.
-
-        Parameters:
-        playlist_id (str): The Spotify playlist id.
-
-        Returns:
-        Playlist: The Playlist object.
-        """
-        playlist_model = PlaylistModel.objects.get(id=playlist_id)
-        songs = playlist_model.songs.all()
-
-        playlist_obj = Playlist(
-            playlist_model.id,
-            playlist_model.url,
-            playlist_model.name,
-            playlist_model.description,
-            playlist_model.author,
-            playlist_model.thumbnail,
-            songs
-        )
-
-        return playlist_obj
     
     def save_playlist_to_db(self, playlist_obj, song_models):
         
