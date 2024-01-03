@@ -4,4 +4,4 @@ playlist_analyser/playlist_analysis/__pycache__
 playlist_analyser/db.sqlite3
 venv/
 playlist_analyser/playlist_analysis/.env
-
+.cache
