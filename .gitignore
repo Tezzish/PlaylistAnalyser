@@ -6,4 +6,4 @@ venv/
 playlist_analyser/playlist_analysis/.env
 .cache
 playlist_analyser/.pytest_cache
-tests/__pycache__
+playlist_analyser/tests/__pycache__/
