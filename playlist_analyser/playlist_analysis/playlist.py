@@ -1,6 +1,7 @@
-import datetime
-
 class Playlist:
+    """
+    Represents a playlist with various attributes and methods for analysis.
+    """
 
     def __init__(self, id, url, name, description, author, thumbnail, songs):
         self._id = id
@@ -16,6 +17,12 @@ class Playlist:
         return f"Playlist(id={self._id}, url={self._url}, name={self._name}, description={self._description}, author={self._author}, thumbnail={self._thumbnail}, songs={self._songs}, avg_energy={self._avg_energy}, avg_danceability={self._avg_danceability}, avg_acousticness={self._avg_acousticness}, avg_valence={self._avg_valence}, avg_loudness={self._avg_loudness}, avg_tempo={self._avg_tempo}, avg_duration={self._avg_duration})"
     
     def __dict__(self):
+        """
+        Returns a dictionary representation of the playlist object.
+        
+        Returns:
+            dict: A dictionary with attribute names as keys and their corresponding values.
+        """
         return {
             'id': self._id,
             'url': self._url,
@@ -83,15 +90,39 @@ class Playlist:
         self._songs = value
 
     def get_avg_of_attribute(self, attribute):
+        """
+        Calculates the average value of a given attribute for all songs in the playlist.
+        
+        Args:
+            attribute (str): The name of the attribute.
+        
+        Returns:
+            float: The average value of the attribute.
+        """
         # get the average of the attribute for all songs in the playlist using functional programming
         return sum(map(lambda song: getattr(song, attribute), self._songs)) / len(self._songs)
     
     def get_max_of_attribute(self, attribute):
+        """
+        Finds the maximum value of a given attribute for all songs in the playlist.
+        
+        Args:
+            attribute (str): The name of the attribute.
+        
+        Returns:
+            tuple: A tuple containing the maximum value and the corresponding song object.
+        """
         # get the max of the attribute for all songs in the playlist using functional programming
         # return a tuple of the value and the song object
         return max(map(lambda song: (getattr(song, attribute), song), self._songs), key=lambda song: song[0])
 
     def get_avg_attributes(self):
+        """
+        Calculates the average values of various attributes for all songs in the playlist.
+        
+        Returns:
+            dict: A dictionary with attribute names as keys and their corresponding average values.
+        """
         return {
             'Energy' : round(self.get_avg_of_attribute('energy') * 100),
             'Danceability' : round(self.get_avg_of_attribute('danceability') * 100),
@@ -103,8 +134,13 @@ class Playlist:
         }
     
     def get_max_attributes(self):
+        """
+        Returns a dictionary containing the maximum values of various attributes of the songs in the playlist.
+        
+        Returns:
+            dict: A dictionary with attribute names as keys and tuples of rounded attribute values and song URLs as values.
+        """
         # we save the values because we need to also return the song url so it's one call instead of two
-        print(getattr(self.songs[0], 'danceability'))
         energy = self.get_max_of_attribute('energy')
         danceability = self.get_max_of_attribute('danceability')
         acousticness = self.get_max_of_attribute('acousticness')
