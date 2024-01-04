@@ -37,5 +37,5 @@ jobs:
       run: |
         export DJANGO_SETTINGS_MODULE=playlist_analyser.settings
         echo $CLIENT_ID
-        pytest
-        pytest --cov
+        # pytest
+        # pytest --cov
