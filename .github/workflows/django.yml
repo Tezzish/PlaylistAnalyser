@@ -27,5 +27,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      working-directory: playlist_analyser/
       run: |
+        export DJANGO_SETTINGS_MODULE=playlist_analyser.settings
         pytest -v
