@@ -36,6 +36,6 @@ jobs:
       working-directory: playlist_analyser/
       run: |
         export DJANGO_SETTINGS_MODULE=playlist_analyser.settings
-        echo $CLIENT_ID
+        echo "My secret key: $CLIENT_ID"
         # pytest
         # pytest --cov
