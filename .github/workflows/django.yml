@@ -6,8 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 env:
-  CLIENT_ID: ${{ secrets.CLIENT_ID }}
-  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  name: Pipeline
 
 jobs:
   build:
