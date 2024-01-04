@@ -38,11 +38,11 @@ jobs:
       working-directory: playlist_analyser/
       run: |
         flake8
-    - name: Run Tests
+    - name: Run Tests and generate coverage
       working-directory: playlist_analyser/
       run: |
         pytest
-        pytest --cov
+        pytest --cov=.
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
