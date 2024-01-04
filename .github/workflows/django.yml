@@ -11,8 +11,10 @@ on:
 jobs:
   build:
   
-    environment:
-      name: Pipeline
+    env:
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      DJANGO_SETTINGS_MODULE: playlist_analyser.settings
     
     runs-on: ubuntu-latest
     strategy:
@@ -38,7 +40,6 @@ jobs:
     - name: Run Tests
       working-directory: playlist_analyser/
       run: |
-        export DJANGO_SETTINGS_MODULE=playlist_analyser.settings
         echo "My secret key: $CLIENT_ID"
         # pytest
         # pytest --cov
