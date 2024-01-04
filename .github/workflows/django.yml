@@ -41,7 +41,7 @@ jobs:
     - name: Run Tests and generate coverage
       working-directory: playlist_analyser/
       run: |
-        pytest --cov=playlist_analysis
+        pytest --cov=playlist_analysis --cov-report=json
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
