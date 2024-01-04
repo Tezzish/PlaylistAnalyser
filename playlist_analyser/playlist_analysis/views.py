@@ -33,7 +33,7 @@ class AnalysisView(APIView):
 
         # serialize the playlist object
         serializer = PlaylistSerializer(playlist)
-        
+
         context = {
             'playlist': serializer.data,
             'avg_values': playlist.get_avg_attributes(),
