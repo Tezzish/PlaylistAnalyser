@@ -1,6 +1,21 @@
 class Song:
 
-    def __init__(self, id, url, title, artist, album, thumbnail, duration, energy, danceability, valence, tempo, loudness, acousticness):
+    def __init__(
+            self,
+            id,
+            url,
+            title,
+            artist,
+            album,
+            thumbnail,
+            duration,
+            energy,
+            danceability,
+            valence,
+            tempo,
+            loudness,
+            acousticness
+            ):
         self._id = id
         self._url = url
         self._title = title
@@ -16,8 +31,18 @@ class Song:
         self._acousticness = acousticness
 
     def __str__(self):
-        return f"Song ID: {self._id}\nURL: {self._url}\nTitle: {self._title}\nArtist: {self._artist}\nAlbum: {self._album}\nEnergy: {self._energy}\nDanceability: {self._danceability}\nAcousticness: {self._acousticness}\nTempo: {self._tempo}"
-      
+        return (
+            f"Song ID: {self._id}\n"
+            f"URL: {self._url}\n"
+            f"Title: {self._title}\n"
+            f"Artist: {self._artist}\n"
+            f"Album: {self._album}\n"
+            f"Energy: {self._energy}\n"
+            f"Danceability: {self._danceability}\n"
+            f"Acousticness: {self._acousticness}\n"
+            f"Tempo: {self._tempo}"
+        )
+
     @property
     def id(self):
         return self._id

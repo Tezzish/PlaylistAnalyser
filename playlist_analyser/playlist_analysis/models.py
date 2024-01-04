@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Playlist(models.Model):
     id = models.CharField(max_length=200, primary_key=True)
@@ -9,6 +10,7 @@ class Playlist(models.Model):
     thumbnail = models.CharField(max_length=1000)
     author = models.CharField(max_length=200)
     songs = models.ManyToManyField('Song')
+
 
 class Song(models.Model):
     name = models.CharField(max_length=200)

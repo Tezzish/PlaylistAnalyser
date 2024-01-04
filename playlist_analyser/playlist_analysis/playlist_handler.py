@@ -20,17 +20,28 @@ class PlaylistHandler:
     None
 
     Methods:
-    get_playlist_id_from_link(playlist_link): Returns the playlist ID from the given playlist link.
-    get_playlist_from_url(playlist_link): Returns the playlist JSON object from the Spotify API for the given playlist link.
-    get_access_token(): Returns the access token required to make requests to the Spotify API.
-    get_audio_features(song_id): Returns the audio features JSON object for the given song ID.
-    get_playlist(playlist_link): Returns the playlist object for the given playlist link.
-    get_playlist_from_db(playlist_id): Returns the playlist object for the given playlist id.
-    map_songs_to_song_objects(songs): Maps the given list of songs to Song objects and saves them to the database.
-    save_playlist_to_db(playlist_obj, song_models): Saves the given playlist object to the database.
-    save_song_to_db(song): Saves the given song object to the database.
+    get_playlist_id_from_link(playlist_link):
+        Returns the playlist ID from the given playlist link.
+    get_playlist_from_url(playlist_link):
+        Returns the playlist JSON object from the Spotify API
+        for the given playlist link.
+    get_access_token():
+        Returns the access token required to make requests to the Spotify API.
+    get_audio_features(song_id):
+        Returns the audio features JSON object for the given song ID.
+    get_playlist(playlist_link):
+        Returns the playlist object for the given playlist link.
+    get_playlist_from_db(playlist_id):
+        Returns the playlist object for the given playlist id.
+    map_songs_to_song_objects(songs):
+        Maps the given list of songs to Song objects
+        and saves them to the database.
+    save_playlist_to_db(playlist_obj, song_models):
+        Saves the given playlist object to the database.
+    save_song_to_db(song):
+        Saves the given song object to the database.
     """
-    
+
     def get_playlist_id_from_link(self, playlist_link):
         """
         Returns the playlist ID from the given playlist link.
@@ -45,10 +56,11 @@ class PlaylistHandler:
         if not playlist_link.startswith('https://open.spotify.com/playlist/'):
             raise Exception('Invalid playlist link')
         return playlist_link.split('/')[-1].split('?')[0]
-    
+
     def get_playlist_from_url(self, playlist_link):
         """
-        Returns the playlist JSON object from the Spotify API for the given playlist link.
+        Returns the playlist JSON object from the Spotify API
+          for the given playlist link.
 
         Parameters:
         playlist_link (str): The Spotify playlist link.
@@ -62,15 +74,19 @@ class PlaylistHandler:
         }
 
         # Make the request to the Spotify API
-        response = requests.get(f"https://api.spotify.com/v1/playlists/{self.get_playlist_id_from_link(playlist_link)}", 
-                                headers=headers)
-        
-        
-        
+        response = requests.get(
+            "https://api.spotify.com/v1/playlists/" +
+            f"{self.get_playlist_id_from_link(playlist_link)}",
+            headers=headers)
+
         # if playlist is private or 404, throw an error
-        if response.status_code == 404 or json.loads(response.text)['public'] == 'false':
+        if response.status_code == (404
+                                    or
+                                    json.loads(response.text)['public']
+                                    == 'false'
+                                    ):
             raise Exception('Playlist unavailable or private')
-        
+
         # Check if the request was successful
         elif response.status_code == 200:
             # html escape the response
@@ -78,7 +94,7 @@ class PlaylistHandler:
             # convert the response to a JSON object
             response_json = json.loads(response_text)
             return response_json
-        
+
         else:
             raise Exception('Failed to get playlist from Spotify API')
 
@@ -95,21 +111,25 @@ class PlaylistHandler:
         client_id = os.getenv('CLIENT_ID')
         client_secret = os.getenv('CLIENT_SECRET')
 
-        #puts the id and secret into the format asked for
+        # puts the id and secret into the format asked for
         token = f"{client_id}:{client_secret}"
         tokenb64 = base64.b64encode(token.encode())
 
-        #data field in request
+        # data field in request
         token_data = {
             "grant_type": "client_credentials"
         }
 
-        #header field in request
+        # header field in request
         token_headers = {
             "Authorization": f"Basic {tokenb64.decode()}"
         }
-        #gets bearer token
-        response = requests.post("https://accounts.spotify.com/api/token", data=token_data, headers=token_headers)
+        # gets bearer token
+        response = requests.post(
+            "https://accounts.spotify.com/api/token",
+            data=token_data,
+            headers=token_headers
+            )
 
         if response.status_code == 200:
             data = response.json()
@@ -117,7 +137,7 @@ class PlaylistHandler:
         else:
             print(f"Error: {response.status_code} - {response.text}")
             raise Exception('Failed to get access token from Spotify API')
-        
+
     def get_audio_features(self, song_ids):
         """
         Returns the audio features JSON object for the given song ID.
@@ -128,29 +148,32 @@ class PlaylistHandler:
         Returns:
         dict: The audio features JSON object.
         """
-        #get the audio features of the song
+        # get the audio features of the song
         access_token = self.get_access_token()
         headers = {
             "Authorization": f"Bearer {access_token}"
         }
 
         # Make the request to the Spotify API using comma separated song ids
-        response = requests.get(f"https://api.spotify.com/v1/audio-features?ids={','.join(song_ids)}",
+        response = requests.get("https://api.spotify.com/v1/audio-features" +
+                                "?ids=" +
+                                f"{','.join(song_ids)}",
                                 headers=headers)
-        
+
         # Check if the request was successful
         if response.status_code == 200:
-            #return a dictionary of the song ids and the corresponding audio features
+            # return a dictionary of the song ids
+            # and the corresponding audio features
             features = {}
             for item in response.json()['audio_features']:
-                if item == None:
+                if item is None:
                     continue
                 features[item['id']] = item
-            return features     
+            return features
         else:
             print(f"Error: {response.status_code} - {response.text}")
             raise Exception('Failed to get audio features from Spotify API')
-        
+
     def get_playlist(self, playlist_link):
         """
         Returns the playlist object for the given playlist link.
@@ -162,25 +185,37 @@ class PlaylistHandler:
         Playlist: The Playlist object.
         """
         playlist_json = self.get_playlist_from_url(playlist_link)
-        # if the playlist is in the database and the playlist has the same songs as the one in the database, return the playlist from the database
+        # if the playlist is in the database
+        # and the playlist has the same songs as the one in the database,
+        # return the playlist from the database
         try:
             playlist_model = self.get_playlist_from_db(playlist_json['id'])
-            # for each track id in the playlist_json, check if it exists in the playlist_model
-            # if all of the songs are the same in the playlist_model, return the playlist_model, else continue
-            playlist_model_songs = playlist_model[0].songs.values_list('id', flat=True)
-            playlist_json_songs = [track['track']['id'] for track in playlist_json['tracks']['items']]
+            # for each track id in the playlist_json,
+            # check if it exists in the playlist_model
+            # if all of the songs are the same in the playlist_model,
+            # return the playlist_model, else continue
+            playlist_model_songs = playlist_model[0].songs.values_list(
+                'id',
+                flat=True
+            )
+            playlist_json_songs = (
+                [track['track']['id']
+                 for track in playlist_json['tracks']['items']]
+            )
 
             if sorted(playlist_model_songs) == sorted(playlist_json_songs):
                 return self.get_playlist_from_db(playlist_model[0].id)
             else:
                 playlist_model.delete()
-        except Exception as e:
+        except Exception:
             pass
-        
-        #maps the songs to song objects
-        mapped_songs, song_models = self.map_songs_to_song_objects(list(playlist_json['tracks']['items']))
 
-        #create playlist object
+        # maps the songs to song objects
+        mapped_songs, song_models = self.map_songs_to_song_objects(
+            list(playlist_json['tracks']['items'])
+            )
+
+        # create playlist object
         playlist_obj = Playlist(
             playlist_json['id'],
             playlist_json['external_urls']['spotify'],
@@ -191,11 +226,11 @@ class PlaylistHandler:
             mapped_songs,
         )
 
-        #save to database
+        # save to database
         self.save_playlist_to_db(playlist_obj, song_models)
 
         return playlist_obj
-    
+
     def get_playlist_from_db(self, playlist_id):
         """
         Returns the playlist object for the given playlist id.
@@ -222,16 +257,18 @@ class PlaylistHandler:
         )
 
         return playlist_obj
-    
+
     def map_songs_to_song_objects(self, songs):
         """
-        Maps the given list of songs to Song objects and saves them to the database.
+        Maps the given list of songs to Song objects
+            and saves them to the database.
 
         Parameters:
         songs (list): The list of songs to be mapped.
 
         Returns:
-        tuple: A tuple containing the list of Song objects and the list of SongModel objects that were saved to the database.
+        tuple: A tuple containing the list of Song objects
+            and the list of SongModel objects that were saved to the database.
         """
 
         song_models = []
@@ -239,13 +276,16 @@ class PlaylistHandler:
 
         # get a set of the songs that don't exist in the database
         song_ids = list(map(lambda song: song['track']['id'], songs))
-        song_ids_in_db = set(map(lambda song: song.id, SongModel.objects.filter(id__in=song_ids)))
+        song_ids_in_db = set(map(lambda song: song.id,
+                                 SongModel.objects.filter(id__in=song_ids)
+                                 ))
         song_ids_not_in_db = set(song_ids) - song_ids_in_db
 
-        # get the audio features for the songs not in the database using their ids
+        ''' get the audio features for the songs
+            not in the database using their ids '''
         try:
             audio_features = self.get_audio_features(song_ids_not_in_db)
-        except Exception as e:
+        except Exception:
             audio_features = {}
 
         for song in songs:
@@ -270,7 +310,7 @@ class PlaylistHandler:
                     song_model.acousticness
                 )
                 # add the song object to the list
-                mapped_songs.append(song_obj)        
+                mapped_songs.append(song_obj)
                 continue
             else:
                 if (song['track']['id'] not in audio_features):
@@ -290,23 +330,23 @@ class PlaylistHandler:
                     audio_features[song['track']['id']]['loudness'],
                     audio_features[song['track']['id']]['acousticness']
                 )
-                #save the song to the database
+                # save the song to the database
                 song_model = self.save_song_to_db(song_obj)
-                #add the song model to the list
+                # add the song model to the list
                 song_models.append(song_model)
             mapped_songs.append(song_obj)
         return mapped_songs, song_models
-    
+
     def save_playlist_to_db(self, playlist_obj, song_models):
-        
-        #save as playlist model
+
+        # save as playlist model
         playlist_model = PlaylistModel(
-            id = playlist_obj.id,
-            url = playlist_obj.url,
-            name = playlist_obj.name,
-            description = playlist_obj.description,
-            author = playlist_obj.author,
-            thumbnail = playlist_obj.thumbnail,
+            id=playlist_obj.id,
+            url=playlist_obj.url,
+            name=playlist_obj.name,
+            description=playlist_obj.description,
+            author=playlist_obj.author,
+            thumbnail=playlist_obj.thumbnail,
         )
 
         playlist_model.save()
@@ -340,4 +380,3 @@ class PlaylistHandler:
         song_model.save()
 
         return song_model
-        

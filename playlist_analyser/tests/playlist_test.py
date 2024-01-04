@@ -1,17 +1,22 @@
 from playlist_analysis.playlist_handler import PlaylistHandler
 import pytest
 
+
 @pytest.fixture
 def handler():
     yield PlaylistHandler()
 
-#------------------ Get_Avg_Of_Attribute Tests ------------------#
+
+# ------------------ Get_Avg_Of_Attribute Tests ------------------ #
 @pytest.mark.django_db
 def test_get_avg_attributes(handler):
-    playlist_url = "https://open.spotify.com/playlist/6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+    playlist_url = (
+        "https://open.spotify.com/playlist/"
+        "6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+    )
     playlist = handler.get_playlist(playlist_url)
     avg_attributes = playlist.get_avg_attributes()
-    
+
     assert avg_attributes['Energy'] == 77
     assert avg_attributes['Danceability'] == 46
     assert avg_attributes['Acousticness'] == 17
@@ -20,10 +25,14 @@ def test_get_avg_attributes(handler):
     assert avg_attributes['Tempo'] == 131
     assert avg_attributes['Duration'] == 222
 
-#------------------ Get_Max_Of_Attribute Tests ------------------#
+
+# ------------------ Get_Max_Of_Attribute Tests ------------------ #
 @pytest.mark.django_db
 def test_get_max_attributes(handler):
-    playlist_url = "https://open.spotify.com/playlist/6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+    playlist_url = (
+        "https://open.spotify.com/playlist/"
+        "6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+    )
     playlist = handler.get_playlist(playlist_url)
     max_attributes = playlist.get_max_attributes()
 

@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
             name='Song',
             fields=[
                 ('name', models.CharField(max_length=200)),
-                ('id', models.CharField(max_length=200, primary_key=True, serialize=False)),
+                ('id', models.CharField(max_length=200, primary_key=True,
+                                        serialize=False)),
                 ('artist', models.CharField(max_length=200)),
                 ('album', models.CharField(max_length=200)),
                 ('thumbnail', models.CharField(max_length=1000)),
@@ -32,7 +33,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Playlist',
             fields=[
-                ('id', models.CharField(max_length=200, primary_key=True, serialize=False)),
+                ('id', models.CharField(max_length=200, primary_key=True,
+                                        serialize=False)),
                 ('url', models.CharField(max_length=1000)),
                 ('name', models.CharField(max_length=200)),
                 ('description', models.CharField(max_length=1000)),

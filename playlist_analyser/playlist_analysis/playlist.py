@@ -13,15 +13,26 @@ class Playlist:
         self._songs = songs
 
     def __str__(self):
-        #return all attributes
-        return f"Playlist(id={self._id}, url={self._url}, name={self._name}, description={self._description}, author={self._author}, thumbnail={self._thumbnail}, songs={self._songs}, avg_energy={self._avg_energy}, avg_danceability={self._avg_danceability}, avg_acousticness={self._avg_acousticness}, avg_valence={self._avg_valence}, avg_loudness={self._avg_loudness}, avg_tempo={self._avg_tempo}, avg_duration={self._avg_duration})"
-    
+        # return all attributes
+        return (
+            f"Playlist(id={self._id}, url={self._url}, name={self._name}, "
+            f"description={self._description}, author={self._author}, "
+            f"thumbnail={self._thumbnail}, songs={self._songs}, "
+            f"avg_energy={self._avg_energy}, "
+            f"avg_danceability={self._avg_danceability}, "
+            f"avg_acousticness={self._avg_acousticness}, "
+            f"avg_valence={self._avg_valence}, "
+            f"avg_loudness={self._avg_loudness}, avg_tempo={self._avg_tempo}, "
+            f"avg_duration={self._avg_duration})"
+            )
+
     def __dict__(self):
         """
         Returns a dictionary representation of the playlist object.
-        
+
         Returns:
-            dict: A dictionary with attribute names as keys and their corresponding values.
+            dict: A dictionary with attribute names as keys
+                and their corresponding values.
         """
         return {
             'id': self._id,
@@ -91,56 +102,73 @@ class Playlist:
 
     def get_avg_of_attribute(self, attribute):
         """
-        Calculates the average value of a given attribute for all songs in the playlist.
-        
+        Calculates the average value of a given attribute
+            for all songs in the playlist.
+
         Args:
             attribute (str): The name of the attribute.
-        
+
         Returns:
             float: The average value of the attribute.
         """
-        # get the average of the attribute for all songs in the playlist using functional programming
-        return sum(map(lambda song: getattr(song, attribute), self._songs)) / len(self._songs)
-    
+        # get the average of the attribute for all songs in the playlist
+        return (
+            sum(map(lambda song: getattr(song, attribute), self._songs)) /
+            len(self._songs)
+        )
+
     def get_max_of_attribute(self, attribute):
         """
-        Finds the maximum value of a given attribute for all songs in the playlist.
-        
+        Finds the maximum value of a given attribute
+            for all songs in the playlist.
+
         Args:
             attribute (str): The name of the attribute.
-        
+
         Returns:
-            tuple: A tuple containing the maximum value and the corresponding song object.
+            tuple: A tuple containing the maximum value
+                and the corresponding song object.
         """
-        # get the max of the attribute for all songs in the playlist using functional programming
+        # get the max of the attribute for all songs in the playlist
         # return a tuple of the value and the song object
-        return max(map(lambda song: (getattr(song, attribute), song), self._songs), key=lambda song: song[0])
+        return (
+            max(
+                map(
+                    lambda song: (getattr(song, attribute), song), self._songs
+                ),
+                key=lambda song: song[0]))
 
     def get_avg_attributes(self):
         """
-        Calculates the average values of various attributes for all songs in the playlist.
-        
+        Calculates the average values of various attributes
+            for all songs in the playlist.
+
         Returns:
-            dict: A dictionary with attribute names as keys and their corresponding average values.
+            dict: A dictionary with attribute names as keys
+                and their corresponding average values.
         """
         return {
-            'Energy' : round(self.get_avg_of_attribute('energy') * 100),
-            'Danceability' : round(self.get_avg_of_attribute('danceability') * 100),
-            'Acousticness' : round(self.get_avg_of_attribute('acousticness') * 100),
-            'Valence' : round(self.get_avg_of_attribute('valence') * 100),
-            'Loudness' : round(self.get_avg_of_attribute('loudness'), 2),
-            'Tempo' : round(self.get_avg_of_attribute('tempo')),
-            'Duration' : round(self.get_avg_of_attribute('duration') / 1000),
+            'Energy': round(self.get_avg_of_attribute('energy') * 100),
+            'Danceability':
+                round(self.get_avg_of_attribute('danceability') * 100),
+            'Acousticness':
+                round(self.get_avg_of_attribute('acousticness') * 100),
+            'Valence': round(self.get_avg_of_attribute('valence') * 100),
+            'Loudness': round(self.get_avg_of_attribute('loudness'), 2),
+            'Tempo': round(self.get_avg_of_attribute('tempo')),
+            'Duration': round(self.get_avg_of_attribute('duration') / 1000),
         }
-    
+
     def get_max_attributes(self):
         """
-        Returns a dictionary containing the maximum values of various attributes of the songs in the playlist.
-        
+        Finds the maximum values of various attributes
+
         Returns:
-            dict: A dictionary with attribute names as keys and tuples of rounded attribute values and song URLs as values.
+            dict: A dictionary with attribute names as keys and tuples
+            of rounded attribute values and song URLs as values.
         """
-        # we save the values because we need to also return the song url so it's one call instead of two
+        ''' We save the values because we need to also return the song url
+            so it's one call instead of two'''
         energy = self.get_max_of_attribute('energy')
         danceability = self.get_max_of_attribute('danceability')
         acousticness = self.get_max_of_attribute('acousticness')
@@ -149,11 +177,13 @@ class Playlist:
         tempo = self.get_max_of_attribute('tempo')
         duration = self.get_max_of_attribute('duration')
         return {
-            'Energy' : (round(energy[0] * 100), energy[1].url),
-            'Danceability' : (round(danceability[0] * 100), danceability[1].url),
-            'Acousticness' : (round(acousticness[0] * 100), acousticness[1].url),
-            'Valence' : (round(valence[0] * 100), valence[1].url),
-            'Loudness' : (round(loudness[0], 2), loudness[1].url),
-            'Tempo' : (round(tempo[0]), tempo[1].url),
-            'Duration' : (round(duration[0] / 1000), duration[1].url),
+            'Energy': (round(energy[0] * 100), energy[1].url),
+            'Danceability':
+                (round(danceability[0] * 100), danceability[1].url),
+            'Acousticness':
+                (round(acousticness[0] * 100), acousticness[1].url),
+            'Valence': (round(valence[0] * 100), valence[1].url),
+            'Loudness': (round(loudness[0], 2), loudness[1].url),
+            'Tempo': (round(tempo[0]), tempo[1].url),
+            'Duration': (round(duration[0] / 1000), duration[1].url),
         }
