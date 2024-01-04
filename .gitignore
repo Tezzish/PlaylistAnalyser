@@ -5,5 +5,5 @@ playlist_analyser/db.sqlite3
 venv/
 playlist_analyser/playlist_analysis/.env
 .cache
-playlist_analyser/.pytest_cache
+playlist_analyser/.pytest_cache/
 playlist_analyser/tests/__pycache__/
