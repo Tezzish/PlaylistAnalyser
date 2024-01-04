@@ -39,4 +39,4 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       run: |
         export DJANGO_SETTINGS_MODULE=playlist_analyser.settings
-        pytest -v
+        pytest -cov
