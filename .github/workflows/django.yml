@@ -34,9 +34,8 @@ jobs:
         flake8
     - name: Run Tests
       working-directory: playlist_analyser/
-      env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       run: |
         export DJANGO_SETTINGS_MODULE=playlist_analyser.settings
+        echo $CLIENT_ID
         pytest
         pytest --cov
