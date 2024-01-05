@@ -22,7 +22,10 @@ jobs:
           node-version: 14
 
       - name: Install dependencies with npm ci
-        run: npm install
+        run: |
+          npm install
+          ls -a
+          ls -a ./frontend/
 
   build:
     needs: common
@@ -30,8 +33,8 @@ jobs:
 
     steps:
       - name: Build React App
-        run: npm run build
         working-directory: frontend/
+        run: npm run build
 
   lint:
     needs: common
@@ -39,5 +42,5 @@ jobs:
 
     steps:
       - name: Run ESLint
-        run: npm run eslint
         working-directory: frontend/
+        run: npm run eslint
