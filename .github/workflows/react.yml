@@ -1,0 +1,45 @@
+name: React
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  common:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies with npm ci
+        run: npm ci
+
+  build:
+    needs: common
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build React App
+        run: npm run build
+
+  lint:
+    needs: common
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run ESLint
+        run: npm run eslint
