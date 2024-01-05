@@ -1,5 +1,7 @@
 # Playlist Anaylser
 This is a full stack web application to analyse your spotify playlists
+!!! Currently in Development !!!
+The backend works however, you can send a form request with playlist_link: \<Your public spotify playlist URL\>
 
 ## To run the application
 - Clone this repo
