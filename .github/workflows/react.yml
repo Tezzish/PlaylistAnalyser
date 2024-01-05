@@ -12,10 +12,6 @@ jobs:
   common:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: frontend/
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -35,6 +31,7 @@ jobs:
     steps:
       - name: Build React App
         run: npm run build
+        working-directory: frontend/
 
   lint:
     needs: common
@@ -43,3 +40,4 @@ jobs:
     steps:
       - name: Run ESLint
         run: npm run eslint
+        working-directory: frontend/
