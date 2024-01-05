@@ -30,17 +30,23 @@ jobs:
   build:
     needs: common
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # This checkout is necessary to get the correct context
+
       - name: Build React App
         working-directory: frontend/
         run: npm run build
+
 
   lint:
     needs: common
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # This checkout is necessary to get the correct context
+
       - name: Run ESLint
         working-directory: frontend/
         run: npm run eslint
