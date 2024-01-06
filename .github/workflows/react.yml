@@ -2,7 +2,7 @@ name: React
 
 on:
   push:
-    branches: ["main", "Pipeline"]
+    branches: ["main", "Pipeline", "Frontend"]
   pull_request:
     branches: ["*"]
 
