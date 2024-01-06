@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - Pipeline
   pull_request:
     branches:
       - main
+      - Pipeline
 
 jobs:
   common:
@@ -24,15 +26,13 @@ jobs:
       - name: Install dependencies with npm ci
         run: |
           npm install
-          ls -a
-          ls -a ./frontend/
 
   build:
     needs: common
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # This checkout is necessary to get the correct context
+        uses: actions/checkout@v2
 
       - name: Build React App
         working-directory: frontend/
@@ -45,8 +45,8 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # This checkout is necessary to get the correct context
+        uses: actions/checkout@v2
 
       - name: Run ESLint
         working-directory: frontend/
-        run: npx eslint .
+        run: npm run lint
