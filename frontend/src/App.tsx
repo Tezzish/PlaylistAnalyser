@@ -1,4 +1,3 @@
-import React from 'react';
 import URLForm from './Form';
 
 function App(): JSX.Element {
