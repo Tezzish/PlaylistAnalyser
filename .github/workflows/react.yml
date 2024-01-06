@@ -2,37 +2,44 @@ name: React
 
 on:
   push:
-    branches:
-      - main
-      - Pipeline
+    branches: ["main", "Pipeline"]
   pull_request:
-    branches:
-      - main
-      - Pipeline
+    branches: ["*"]
 
 jobs:
-  common:
-    runs-on: ubuntu-latest
+  # common:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 14
 
-      - name: Install dependencies with npm ci
-        run: |
-          npm install
+  #     - name: Install dependencies with npm ci
+  #       run: |
+  #         npm install
 
   build:
-    needs: common
+    # needs: common
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Build React App
         working-directory: frontend/
@@ -40,12 +47,23 @@ jobs:
 
 
   lint:
-    needs: common
+    # needs: common
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Run ESLint
         working-directory: frontend/
