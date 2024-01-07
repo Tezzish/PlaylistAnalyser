@@ -12,16 +12,15 @@ def handler():
     yield handler
 
 
-# ------------------ Get_Playlist_From_Url Tests ------------------ #
+# ------------------ get_playlist_from_spotify Tests ------------------ #
 # simple test to get a playlist from a url
 # returns the json of the playlist
-def test_get_playlist_from_url(handler):
+def test_get_playlist_from_spotify(handler):
     # gets a json of the playlist
     playlist_url = (
-        "https://open.spotify.com/playlist/"
-        "6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+        "6cUbe8r2kP140bL0Z2HHXV"
     )
-    playlist = handler.get_playlist_from_url(playlist_url)
+    playlist = handler.get_playlist_from_spotify(playlist_url)
     assert playlist is not None
     assert playlist['name'] == "Fleece it out"
     assert html.unescape(playlist['description']) == (
@@ -38,14 +37,14 @@ def test_get_playlist_from_url(handler):
 
 
 # test for an invalid link
-def test_get_playlist_from_url_with_invalid_link(handler):
+def test_get_playlist_from_spotify_with_invalid_spotify_link(handler):
     playlist_url = (
         "https://open.spotify.com/playlist/"
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
     )
     try:
-        playlist = handler.get_playlist_from_url(playlist_url)
+        playlist = handler.get_playlist_from_spotify(playlist_url)
         assert playlist is None
 
     except Exception as e:
@@ -96,6 +95,36 @@ def test_get_playlist(handler):
     assert len(playlist.songs) == 19
 
 
+# tests the get playlist method in the playlist handler
+@pytest.mark.django_db
+def test_get_saved_playlist(handler):
+    playlist_url = (
+        "https://open.spotify.com/playlist/"
+        "6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+        )
+    handler.get_playlist(playlist_url)
+    playlist2 = handler.get_playlist(playlist_url)
+
+    assert playlist2 is not None
+    assert playlist2.id == "6cUbe8r2kP140bL0Z2HHXV"
+    assert playlist2.url == (
+        "https://open.spotify.com/playlist/6cUbe8r2kP140bL0Z2HHXV"
+    )
+    assert playlist2.name == "Fleece it out"
+    assert len(playlist2.songs) == 19
+
+
+def test_get_playlist_from_id_with_invalid_link(handler):
+    playlist_url = (
+        "AAAAAAAAAAAAAAAAAAAA"
+        "HHHHHHHHHHHHHHHHHHHH"
+    )
+    with pytest.raises(Exception) as context:
+        playlist = handler.get_playlist_id_from_link(playlist_url)
+        assert playlist is None
+    assert str(context.value) == "Invalid playlist link"
+
+
 # ------------------ Save_Playlist Tests ------------------ #
 @pytest.mark.django_db
 def test_save_playlist(handler):
@@ -105,3 +134,31 @@ def test_save_playlist(handler):
     )
     playlist = handler.get_playlist(playlist_url)
     assert handler.get_playlist_from_db(playlist.id) is not None
+
+
+# ------------------ Get_Playlist_From_Db Tests ------------------ #
+# tests the get playlist from db method
+@pytest.mark.django_db
+def test_get_playlist_from_db(handler):
+    playlist_url = (
+        "https://open.spotify.com/playlist/"
+        "6cUbe8r2kP140bL0Z2HHXV?si=89cbce6452b84b10"
+        )
+    playlist = handler.get_playlist(playlist_url)
+    playlist2 = handler.get_playlist_from_db(playlist.id)
+
+    assert playlist2 is not None
+    assert playlist2.id == "6cUbe8r2kP140bL0Z2HHXV"
+    assert playlist2.url == (
+        "https://open.spotify.com/playlist/6cUbe8r2kP140bL0Z2HHXV"
+    )
+    assert playlist2.name == "Fleece it out"
+    assert len(playlist2.songs) == 19
+
+
+@pytest.mark.django_db
+def test_get_unseen_playlist_from_db(handler):
+    with pytest.raises(Exception) as context:
+        playlist2 = handler.get_playlist_from_db('AAAAAAAAAAAH')
+        assert playlist2 is None
+    assert str(context.value) == "Playlist not found in database"
