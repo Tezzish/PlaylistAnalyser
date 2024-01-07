@@ -11,8 +11,9 @@ playlist_handler = PlaylistHandler()
 
 class AnalysisView(APIView):
     def post(self, request):
-        print(request.POST)
-        playlist_link = request.POST.get('playlist_link')
+        print(request.data)
+        # get the playlist link from the request
+        playlist_link = request.data.get('playlist_link')
 
         # if no link was provided, return an error
         if playlist_link is None:
