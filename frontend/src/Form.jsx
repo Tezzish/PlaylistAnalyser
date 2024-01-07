@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PlaylistURL = "http://localhost:8000/analysis/"
 
 function Form() {
   const [text, setText] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    MakeRequest(PlaylistURL, text );
+    const responseFromServer = MakeRequest(PlaylistURL, text );
+    console.log(responseFromServer);
+    navigate('/new-page');
   }
 
   return (
@@ -41,8 +44,7 @@ async function MakeRequest(url, link) {
       throw new Error('Network response was not ok');
     }
 
-    const data = await response.json();
-    console.log(data);
+    return await response.json();
   } catch (error) {
     console.error('Error:', error);
   }
