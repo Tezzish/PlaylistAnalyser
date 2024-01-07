@@ -10,7 +10,7 @@ function Form() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const responseFromServer = await MakeRequest(PlaylistURL, text );
-    navigate('/new-page', { state: { data: responseFromServer } });
+    navigate('/analysis/', { state: { data: responseFromServer } });
   }
 
   return (

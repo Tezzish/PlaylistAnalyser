@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-const NewPage = () => {
+const AnalysisPage = () => {
     const location = useLocation();
     const data = location.state.data;
     // name of playlist
@@ -13,8 +13,6 @@ const NewPage = () => {
     useEffect(() => {
         document.title = name + " - Analysis";
     }, [name]);
-
-    console.log(data);
 
     return (
         <div>
@@ -28,4 +26,4 @@ const NewPage = () => {
     );
 };
 
-export default NewPage;
+export default AnalysisPage;
