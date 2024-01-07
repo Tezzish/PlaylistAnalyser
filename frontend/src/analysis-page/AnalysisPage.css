@@ -1,0 +1,62 @@
+.main-div {
+  position: absolute;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* overflow: hidden; */
+}
+
+.background-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* background-size: cover; */
+  background-position: center;
+  filter: blur(25px);
+  z-index: -1;
+  opacity: 0.6;
+  background-attachment: fixed;
+}
+
+.playlist-title {
+    font-weight: 900;
+    font-size: 72px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+.album-art {
+    position: relative;
+    width: 540px;
+    height: 540px;
+    border-radius: 5%;
+    margin-top: 50px;
+    max-width: 100%;
+    max-height: 100%;
+    transition: all 0.2s ease-in-out;
+}
+
+.page-button {
+    position: absolute;
+    bottom:6vh;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #1DB954;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.page-button:hover {
+    background-color: white;
+    color: #1DB954;
+    border: 8px solid #1DB954;
+}
