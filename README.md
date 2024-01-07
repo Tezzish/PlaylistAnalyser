@@ -1,12 +1,17 @@
-# Playlist Anaylser
+# Playlist Analyser
 This is a full stack web application to analyse your spotify playlists
 !!! Currently in Development !!!
-The backend works however, you can send a form request with playlist_link: \<Your public spotify playlist URL\>
 
-## To run the application
-- Clone this repo
-- Set up a python virtual environment
-- Use pip to install the requirements in requirements.txt
+## To run the backend:
+- Run `cd playlist_analyser`
+- Set up a python virtual environment with `python -m venv venv`
+- Use pip to install the requirements in requirements.txt with `pip install -r requirements.txt`
 - Get your Client ID and Secret from the Spotify developer console
-- Add these to a .env file
-- Run the application using $python manage.py runserver
+- Add these to a .env file or export them as environment variables
+- Run the application using `python manage.py runserver`
+
+## To run the frontend:
+- Run `cd frontend`
+- Run `npm install`
+- Run `npm run dev`
+- Go to localhost:xxxx (xxxx is the port number) on your browser
