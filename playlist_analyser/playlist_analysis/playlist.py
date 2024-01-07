@@ -13,17 +13,13 @@ class Playlist:
         self._songs = songs
 
     def __str__(self):
+        # map songs to song names
+        songs = list(map(lambda song: song.title, self._songs))
         # return all attributes
         return (
             f"Playlist(id={self._id}, url={self._url}, name={self._name}, "
             f"description={self._description}, author={self._author}, "
-            f"thumbnail={self._thumbnail}, songs={self._songs}, "
-            f"avg_energy={self._avg_energy}, "
-            f"avg_danceability={self._avg_danceability}, "
-            f"avg_acousticness={self._avg_acousticness}, "
-            f"avg_valence={self._avg_valence}, "
-            f"avg_loudness={self._avg_loudness}, avg_tempo={self._avg_tempo}, "
-            f"avg_duration={self._avg_duration})"
+            f"thumbnail={self._thumbnail}, songs={songs}"
             )
 
     def __dict__(self):
