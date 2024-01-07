@@ -11,6 +11,7 @@ const AnalysisPage = () => {
     // const avgValues = data.avg_values;
     const playlistURL = data.playlist.url;
     const image = data.playlist.thumbnail;
+    const author = data.playlist.author;
     console.log(image);
 
     useEffect(() => {
@@ -26,10 +27,11 @@ const AnalysisPage = () => {
             <a className="playlist-title" href={playlistURL} target="_blank" rel="noopener noreferrer">
                 <h1>{name}</h1>
             </a>
+            <h3 className="author-header"> By: {author}</h3>
             <img 
                 src={image} 
                 className="album-art"/>
-            <button className = "page-button"> ▼ </button>
+            <button className = "page-button">▼</button>
         </div>
     );
 };
