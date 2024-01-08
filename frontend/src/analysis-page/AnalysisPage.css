@@ -20,17 +20,18 @@
   background-attachment: fixed;
 }
 
+a {
+    text-decoration: none;
+}
+
 .playlist-title {
     font-weight: 900;
     font-size: 72px;
     font-family: 'Montserrat', sans-serif;
     color: white;
-}
+    transition: all 0.75s ease-in-out;
 
-a {
-    text-decoration: none;
 }
-
 .author-header {
     font-weight: 900;
     font-size: 36px;
@@ -47,7 +48,7 @@ a {
     margin-top: 2.5vh;
     max-width: 100%;
     max-height: 100%;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.75s ease-in-out;
 }
 
 .page-button {
@@ -69,4 +70,47 @@ a {
     background-color: white;
     color: #1DB954;
     border: 8px solid #1DB954;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border: solid 10px;
+    margin-top:5px;
+    border-color: black transparent transparent transparent;
+}
+.progress-ring-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: -10vh;
+}
+
+.progress-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    margin-bottom: 2.5vh;
+}
+
+.ring-text {
+    transition: all 0.2s ease-in-out;
+    font-size: 32px;
+    font-weight: 800;
+    fill: white;
+}
+
+.ring-header {
+    transition: all 0.2s ease-in-out;
+    font-size: 24px;
+    font-weight: 800;
+    fill: white;
+}
+
+.progress-ring {
+    transition: stroke-dashoffset 0.75s ease-out;
 }
