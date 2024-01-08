@@ -107,3 +107,7 @@ a {
 .progress-ring {
     transition: stroke-dashoffset 0.75s ease-out;
 }
+
+.progress-ring:hover {
+    stroke: #1DB954;
+}

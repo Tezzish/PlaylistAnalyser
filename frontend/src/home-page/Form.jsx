@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PlaylistURL = "http://localhost:8000/analysis/"
-
 function Form() {
   const [text, setText] = useState('');
   const [invalidInput, setInvalidInput] = useState(false);
@@ -21,8 +19,7 @@ function Form() {
       setTimeout(() => setInvalidInput(false), 820);
       return;
     }
-    const responseFromServer = await MakeRequest(PlaylistURL, text );
-    navigate('/analysis/', { state: { data: responseFromServer } });
+    navigate('/analysis/', { state: { playlist_link: text } });
   }
 
   return (
@@ -44,26 +41,5 @@ function Form() {
     </form>
   );
   }
-
-async function MakeRequest(url, link) {
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 'playlist_link': link }),
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
 
 export default Form;

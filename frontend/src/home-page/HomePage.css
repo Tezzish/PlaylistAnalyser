@@ -81,3 +81,12 @@
     border: 2px solid red;
     border-left: none;
 }
+
+.loading-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+}
