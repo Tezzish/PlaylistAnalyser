@@ -91,7 +91,6 @@ a {
 }
 
 .ring-text {
-    transition: all 0.2s ease-in-out;
     font-size: 32px;
     font-weight: 800;
     fill: white;
@@ -105,9 +104,22 @@ a {
 }
 
 .progress-ring {
-    transition: stroke-dashoffset 0.75s ease-out;
+    transition: stroke-dashoffset 0.75s ease-in-out;
 }
 
-.progress-ring:hover {
+.progress-div:hover .progress-ring {
     stroke: #1DB954;
+}
+
+.progress-div:hover .ring-text {
+    fill: #1DB954;
+}
+
+.loading-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    flex-direction: column;
 }

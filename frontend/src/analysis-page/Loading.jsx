@@ -2,7 +2,7 @@ import { Audio } from 'react-loader-spinner';
 
 function Loading() {
     return (
-            <div className="Loading-div">
+            <div className="loading-div">
                 <Audio
                     height="80"
                     width="80"
