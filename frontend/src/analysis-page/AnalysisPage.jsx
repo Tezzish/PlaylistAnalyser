@@ -2,21 +2,52 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import './AnalysisPage.css';
 import ProgressRing from "./ProgressRing";
+import Loading from "./Loading";
+
+const URL = "http://localhost:8000/analysis/"
 
 const AnalysisPage = () => {
     const location = useLocation();
-    const data = location.state.data;
-    // name of playlist
+    const [data, setData] = useState(null);
+    const [showRings, setShowRings] = useState(false);
+
+
+    console.log("location " + location.state.playlist_link);
+
+    useEffect(() => {
+        async function makeRequest() {
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'playlist_link': location.state.playlist_link }),
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setData(data);
+            document.title = data.playlist.name + " - Analysis";
+            return;
+        }
+
+        makeRequest();
+    }, [location.state.playlist_link]);
+
+    if (!data) {
+        return <Loading />;
+    }
+
+
     const name = data.playlist.name;
-    // dictionary of avg values
     const avgValues = data.avg_values;
     const playlistURL = data.playlist.url;
     const image = data.playlist.thumbnail;
     const author = data.playlist.author;
-    useEffect(() => {
-        document.title = name + " - Analysis";
-    }, [name]);
-
     const handleButtonClick = () => {
         setShowRings(true);
         // decrease the playlist-title font size
@@ -35,7 +66,7 @@ const AnalysisPage = () => {
             bar.style.width = bar.dataset.value + '%'; // Set the width to the desired value
         });
     };
-    const [showRings, setShowRings] = useState(false);
+
     return (
         <div className="main-div">
             <div 

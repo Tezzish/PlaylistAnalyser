@@ -36,7 +36,6 @@ function ProgressRing({ text, value }) {
     const newOffset = circumference - (value / 100 * circumference);
     // the amount to rotate the circle so that the bar is symmetrical across the y-axis
     const rotation = newOffset / circumference * 360 / 2;
-    console.log(rotation);
 
     function getColor(value) {
         let hue;
