@@ -15,3 +15,5 @@ This is a full stack web application to analyse your spotify playlists
 - Run `npm install`
 - Run `npm run dev`
 - Go to localhost:xxxx (xxxx is the port number) on your browser
+
+### To get testing statistics, please visit [Playlist Analyser code coverage](https://app.codecov.io/gh/Tezzish/PlaylistAnalyser/)

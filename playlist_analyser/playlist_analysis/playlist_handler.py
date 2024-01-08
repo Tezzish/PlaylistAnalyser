@@ -22,7 +22,7 @@ class PlaylistHandler:
     Methods:
     get_playlist_id_from_link(playlist_link):
         Returns the playlist ID from the given playlist link.
-    get_playlist_from_url(playlist_link):
+    get_playlist_from_spotify(playlist_link):
         Returns the playlist JSON object from the Spotify API
         for the given playlist link.
     get_access_token():
@@ -57,7 +57,7 @@ class PlaylistHandler:
             raise Exception('Invalid playlist link')
         return playlist_link.split('/')[-1].split('?')[0]
 
-    def get_playlist_from_url(self, playlist_link):
+    def get_playlist_from_spotify(self, playlist_link):
         """
         Returns the playlist JSON object from the Spotify API
           for the given playlist link.
@@ -76,7 +76,7 @@ class PlaylistHandler:
         # Make the request to the Spotify API
         response = requests.get(
             "https://api.spotify.com/v1/playlists/" +
-            f"{self.get_playlist_id_from_link(playlist_link)}",
+            f"{playlist_link}",
             headers=headers)
 
         # if playlist is private or 404, throw an error
@@ -184,7 +184,10 @@ class PlaylistHandler:
         Returns:
         Playlist: The Playlist object.
         """
-        playlist_json = self.get_playlist_from_url(playlist_link)
+        # get the playlist id from the link
+        playlist_id = self.get_playlist_id_from_link(playlist_link)
+        # get the playlist json from the spotify api
+        playlist_json = self.get_playlist_from_spotify(playlist_id)
         # if the playlist is in the database
         # and the playlist has the same songs as the one in the database,
         # return the playlist from the database
@@ -194,7 +197,7 @@ class PlaylistHandler:
             # check if it exists in the playlist_model
             # if all of the songs are the same in the playlist_model,
             # return the playlist_model, else continue
-            playlist_model_songs = playlist_model[0].songs.values_list(
+            playlist_model_songs = playlist_model.songs.values_list(
                 'id',
                 flat=True
             )
@@ -241,8 +244,9 @@ class PlaylistHandler:
         Returns:
         Playlist: The Playlist object.
         """
-        playlist_model = PlaylistModel.objects.get(id=playlist_id)
-        if playlist_model is None:
+        try:
+            playlist_model = PlaylistModel.objects.get(id=playlist_id)
+        except Exception:
             raise Exception('Playlist not found in database')
         songs = playlist_model.songs.all()
 
