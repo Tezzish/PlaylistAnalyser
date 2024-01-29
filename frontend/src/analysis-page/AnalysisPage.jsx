@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import './AnalysisPage.css';
 import ProgressRing from "./ProgressRing";
 import Loading from "./Loading";
+import ScrollingTitle from "./ScrollingTitle";
 
 const URL = "http://localhost:8000/analysis/"
 
@@ -31,11 +32,10 @@ const AnalysisPage = () => {
 
             const data = await response.json();
             setData(data);
-            document.title = data.playlist.name + " - Analysis";
             return;
         }
-
         makeRequest();
+
     }, [location.state.playlist_link]);
 
     if (!data) {
@@ -48,6 +48,8 @@ const AnalysisPage = () => {
     const playlistURL = data.playlist.url;
     const image = data.playlist.thumbnail;
     const author = data.playlist.author;
+    document.title = data.playlist.name + " - Analysis";
+    
     const handleButtonClick = () => {
         setShowRings(true);
         // decrease the playlist-title font size
@@ -74,7 +76,7 @@ const AnalysisPage = () => {
                 style={{backgroundImage:`url(${image})`}}
             />
             <a className="playlist-title" href={playlistURL} target="_blank" rel="noopener noreferrer">
-                <h1>{name}</h1>
+                <ScrollingTitle text={name} />
             </a>
             <h3 className="author-header"> By: {author}</h3>
             <img 
