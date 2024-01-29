@@ -15,14 +15,16 @@ function ScrollingTitle({ text }) {
         const containerWidth = titleRef.current.offsetWidth;
         if (titleWidth > containerWidth) {
             // If the text is too long, add the 'animate' class
-            titleRef.current.classList.add('animate');
             setIsTooLong(true);
+        } else {
+            // If the text is not too long, remove the 'animate' class and set `isTooLong` to false
+            setIsTooLong(false);
         }
     }, [text]); // Re-run this effect whenever `text` changes
-
+    
     return (
         <h1 className="playlist-title">
-            <div ref={titleRef} className="title-container">
+            <div ref={titleRef} className={`title-container ${isTooLong ? 'animate' : ''}`}>
                 <span>{text}</span>
                 {isTooLong && <span>{text}</span>}
             </div>
