@@ -7,24 +7,7 @@ on:
     branches: ["*"]
 
 jobs:
-  # common:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
-
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 14
-
-  #     - name: Install dependencies with npm ci
-  #       run: |
-  #         npm install
-
   build:
-    # needs: common
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -45,7 +28,20 @@ jobs:
       - name: Build React App
         working-directory: frontend/
         run: npm run build
-
+      
+      - name: Deploy to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USERNAME: ubuntu
+          TARGET: /home/ubuntu/frontend/build
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          rsync -rav -e "ssh -i ~/.ssh/id_rsa" frontend/build $USERNAME@$HOST:$TARGET
+          rm -rf ~/.ssh/id_rsa
 
   lint:
     # needs: common
